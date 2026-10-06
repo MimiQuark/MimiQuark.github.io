@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="记录项目过程、技术选型、问题排查与经验总结。">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta property="og:title" content="项目与经验 | 技术博客">
+  <meta property="og:description" content="项目记录、问题复盘与知识总结。">
+  <meta property="og:type" content="website">
+  <title>项目与经验 | 技术博客</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%231f3328%22/><text x=%2250%22 y=%2268%22 text-anchor=%22middle%22 font-size=%2256%22 font-family=%22Arial%22 fill=%22%23f5f3ed%22>P</text></svg>">
+  <link rel="stylesheet" href="styles.css?v=20260914-agent-eval">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "项目与经验",
+      "description": "项目记录、问题复盘与知识总结。"
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="nav-shell">
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="brand-mark">P.</span>
+        <span class="brand-copy"><strong id="brandName">Z的技术博客</strong><small>PROJECT NOTES</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a class="nav-link active" href="#home">首页</a>
+        <a class="nav-link" href="#projects">项目</a>
+        <a class="nav-link" href="#notes">文章</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
+          <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"></path></svg>
+        </button>
+        <button class="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero-simple section-shell" id="home">
+      <div class="hero-copy reveal">
+        <p class="hero-kicker" id="heroEyebrow">PROJECTS &amp; LESSONS</p>
+        <h1 id="heroTitle"></h1>
+        <p class="hero-summary" id="heroSummary"></p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#projects"><span id="projectsButtonLabel">浏览项目</span> <span>↓</span></a>
+          <a class="button button-secondary" href="#notes" id="notesButtonLabel">阅读经验总结</a>
+        </div>
+        <div class="hero-meta" id="heroTags"></div>
+      </div>
+      <aside class="blog-author-card reveal" aria-label="博客作者介绍">
+        <div class="author-card-top"><span>ABOUT THE BLOG</span><span class="panel-status"><i></i> 持续更新</span></div>
+        <div class="author-profile">
+          <div class="author-avatar" id="authorAvatar">Z</div>
+          <div><strong id="authorName">Z.</strong><small id="authorHeadline">记录数据工程与 LLM 应用的学习过程</small></div>
+        </div>
+        <p class="author-bio" id="authorBio"></p>
+        <div class="author-topics" id="authorTopics"></div>
+        <div class="author-stats" id="blogStats"></div>
+      </aside>
+    </section>
+
+    <section class="section section-shell" id="projects">
+      <div class="section-heading reveal">
+        <div><p class="eyebrow" id="projectsEyebrow">01 / PROJECTS</p><h2 id="projectsTitle">项目记录</h2></div>
+        <p class="section-intro" id="projectsIntro">整理每个项目的背景、职责、关键难点和解决方案。</p>
+      </div>
+      <div class="featured-project reveal" id="featuredProject"></div>
+      <div class="project-grid" id="projectGrid"></div>
+    </section>
+
+    <section class="notes-section section-block" id="notes">
+      <div class="section-shell">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow" id="notesEyebrow">02 / NOTES</p><h2 id="notesTitle">经验总结</h2></div>
+          <p class="section-intro" id="notesIntro">记录问题是怎么出现的、如何定位，以及最后沉淀了什么方法。</p>
+        </div>
+        <div class="note-toolbar reveal">
+          <div class="note-filters" id="noteFilters" role="group" aria-label="经验文章分类"></div>
+          <label class="search-box" for="noteSearch">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <input id="noteSearch" type="search" placeholder="搜索问题、技术或关键词…" autocomplete="off">
+          </label>
+        </div>
+        <div class="notes-grid" id="notesGrid" aria-live="polite"></div>
+        <div class="empty-state" id="notesEmpty" hidden><strong>没有找到匹配内容</strong><span>试试其他关键词或分类。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-shell footer-inner">
+      <div><span class="brand-mark">P.</span><strong id="footerName">Z的技术博客</strong></div>
+      <p>© <span id="currentYear">2026</span> 项目记录与经验总结</p>
+      <a href="#home">回到顶部 ↑</a>
+    </div>
+  </footer>
+
+  <div class="modal" id="detailModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <article class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" type="button" aria-label="关闭" data-close-modal>×</button>
+      <div class="modal-hero" id="modalHero"><span id="modalEyebrow"></span><strong id="modalNumber"></strong></div>
+      <div class="modal-content">
+        <p class="modal-meta" id="modalMeta"></p>
+        <h2 id="modalTitle"></h2>
+        <p class="modal-lead" id="modalLead"></p>
+        <div class="modal-sections" id="modalSections"></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="data.js?v=20260914-agent-eval"></script>
+  <script src="app.js?v=20260914-agent-eval"></script>
+</body>
+</html>

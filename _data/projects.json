@@ -1,0 +1,184 @@
+{
+  "items": [
+    {
+      "id": "focus-stylegan-augmentation",
+      "number": "01",
+      "title": "基于 Focus-StyleGAN 的工业缺陷图像增广系统",
+      "type": "本科毕业设计 / 生成式视觉",
+      "role": "独立完成",
+      "period": "本科毕业设计",
+      "stack": ["PyTorch", "Focus-StyleGAN", "WGAN-GP", "AdaIN", "CBAM", "Optuna", "Flask", "MVTec AD"],
+      "summary": "面向工业异常检测中的缺陷样本稀缺问题，设计双分支解耦生成器，将缺陷生成与背景保持分开建模，并通过注意力融合和多尺度判别器生成可控伪异常图像。",
+      "challenge": [
+        "工业缺陷样本稀少，传统几何变换无法生成新的缺陷形态。",
+        "单分支生成器需要同时学习缺陷纹理和产品背景，容易出现背景扭曲。",
+        "微小、低对比度缺陷难以被单尺度判别器有效识别。"
+      ],
+      "solution": [
+        "设计缺陷聚焦分支和背景保持分支，并引入 AdaIN 进行风格控制。",
+        "使用注意力引导融合模块消除拼接痕迹，使缺陷与背景过渡自然。",
+        "构建三尺度 PatchGAN 判别器，并在特征层中嵌入 CBAM 注意力。",
+        "联合 WGAN-GP、VGG19 感知损失、L1 重构损失和 LPIPS 约束训练过程。",
+        "通过 Optuna 搜索生成器、判别器学习率和多项损失权重。"
+      ],
+      "impact": [
+        "生成质量达到 FID 22.5、IS 2.9、LPIPS 0.18、PPS 0.79。",
+        "将伪异常样本加入训练集后，PaDiM 的 Pixel-AUC 从 0.852 提升到 0.943。",
+        "PRO-AUC 从 0.828 提升到 0.925，Cable 与 Capsule 等稀缺类别提升最明显。"
+      ],
+      "highlight": "双分支生成、注意力融合与下游增广验证",
+      "detailMarkdown": "/public/projects/focus-stylegan-augmentation/README.md"
+    },
+    {
+      "id": "industrial-sft-pipeline",
+      "number": "02",
+      "title": "面向工业质检的多模态 SFT 数据构建与质量过滤管线",
+      "type": "扩展项目 / 多模态数据工程",
+      "role": "扩展项目负责人 / 数据管线",
+      "period": "2025.09 - 2026.09",
+      "stack": ["Python", "MVTec AD", "Qwen-VL", "StyleGAN", "LLaMA-Factory", "MD5"],
+      "summary": "在 Focus-StyleGAN 基础项目上扩展，从缺陷 mask 标注、VLM 自然语言改写，到合成数据生成、去重和质量评分，搭建可对接 LLaMA-Factory 的多模态 SFT 数据生产管线。",
+      "challenge": [
+        "基础项目能够生成伪异常图像，但生成图与结构化训练指令之间缺少稳定映射。",
+        "dHash 去重误删 39% 样本，合成数据与真实数据的去重策略不能简单共用。",
+        "生成图需要同时判断自然度、融合度和可用性，不能只靠人工抽查。",
+        "生成数据缺少版本、校验和过滤记录，难以复核与回归。"
+      ],
+      "solution": [
+        "复用 Focus-StyleGAN 作为图像来源，扩展为程序化标注、VLM 改写和标准 SFT 数据生成链路。",
+        "基于 MVTec AD 的 ground-truth mask 提取缺陷结构，并通过 Qwen-VL 统一改写为自然语言 instruction。",
+        "替换会产生误删的 dHash 方案，串联 MD5 精确去重、JSONL 校验、配置哈希和版本化目录。",
+        "增加合成数据自然度、融合度和可用性评分，并设计真实图与生成图盲测对照实验。"
+      ],
+      "impact": [
+        "在 15 个品类上产出 1725 条程序化模板样本。",
+        "将误删 678 条样本的 dHash 方案替换为 MD5 精确去重，实现零误删。",
+        "通过 133 张盲测样本验证过滤器区分度，并定位到生成器类别漂移导致的瓶身身份丢失。"
+      ],
+      "highlight": "在基础生成项目上扩展数据资产与质量评测",
+      "detailMarkdown": "/public/projects/industrial-sft-pipeline/README.md"
+    },
+    {
+      "id": "sft-audit-kit",
+      "number": "03",
+      "title": "SFT Audit Kit：多模态数据集质量审计工具",
+      "type": "数据工程工具 / 质量门禁",
+      "role": "独立开发",
+      "period": "持续开发",
+      "stack": ["Python", "Pillow", "JSONL", "MD5", "unittest", "HTML Report", "CI"],
+      "summary": "把 SFT 数据管线中的质量检查抽象成通用工具，对数据格式、图片完整性、重复样本、ID 冲突、训练集泄漏和模板文本进行审计，并输出可追溯报告。",
+      "challenge": [
+        "多模态数据缺少统一结构，不同版本可能没有顶层 ID、类别或 split 字段。",
+        "固定图片尺寸白名单会把 MVTec 等真实数据的合法尺寸误判为异常。",
+        "重复文本和重复图片如果按记录逐条报告，会产生大量不可复核的噪声。",
+        "数据发布前缺少自动质量门禁，问题往往到训练阶段才被发现。"
+      ],
+      "solution": [
+        "支持必填字段校验，同时从图片路径和 meta.annotation 推导 ID、类别与 split。",
+        "支持 manifest.json 或 --dataset-root 自动解析外部图片目录。",
+        "使用完整图片解码和 MD5 精确去重，检查缺图、重复图片与 train/test 泄漏。",
+        "按问题组聚合重复文本警告，并输出 HTML、JSON、CSV 三份报告。",
+        "提供 --strict 模式，将 Error 转换为 CI 非零退出码。"
+      ],
+      "impact": [
+        "在 1725 条真实 MVTec SFT 数据上完成完整审计，1725/1725 条无错误。",
+        "识别 1725 张唯一图片，未发现缺图、重复图片、重复 ID 或数据泄漏。",
+        "将 614 条图片尺寸误报降为 0，并将重复文本告警由逐条输出压缩为 116 个问题组。"
+      ],
+      "highlight": "数据发布质量门禁与可追溯审计报告",
+      "detailMarkdown": "/public/projects/sft-audit-kit/README.md"
+    },
+    {
+      "id": "agent-eval-workbench",
+      "number": "04",
+      "title": "Agent Eval Workbench：工具调用评测工作台",
+      "type": "Agent 工程工具 / 可观测性",
+      "role": "独立开发",
+      "period": "持续开发",
+      "stack": ["Python", "JSONL", "Tool Calling", "RAG Eval", "Parameter Eval", "HTML Report", "CI"],
+      "summary": "把 Agent 评测从单一工具准确率扩展为工具、参数、RAG 引用、拒答、JSON、延迟和 token 七维评测，并支持多模型或 Prompt 横向对比。",
+      "challenge": [
+        "只比较工具名称，无法发现城市、污染物等参数传错。",
+        "最终答案看似正确，但 RAG 引用可能不存在或并不完整。",
+        "应拒答的问题可能仍然生成答案，错误拒答也缺少指标。",
+        "模型原始 JSON 损坏时，只看工具调用结果会漏掉执行链路问题。",
+        "不同模型和 Prompt 的结果难以使用同一套标准横向比较。"
+      ],
+      "solution": [
+        "对工具集合执行顺序无关比较，并统计缺失工具和额外工具。",
+        "增加参数级标注、字段归一化和匹配准确率。",
+        "增加 RAG 引用完全匹配率、平均召回率和拒答准确率。",
+        "校验 JSON 布尔标记或直接解析 raw 输出，统计结构化输出有效率。",
+        "增加规则版与 LLM 版对比报告，以及 --fail-under CI 门禁。"
+      ],
+      "impact": [
+        "使用 60 条真实空气质量案例复测，规则版 100%，LLM 版 96.7%。",
+        "增强基准准确识别参数错误、引用缺失、拒答失败和无效 JSON。",
+        "LLM 版 60 条真实结果的结构化输出有效率为 100%。"
+      ],
+      "highlight": "Agent 多层评测与回归质量门禁",
+      "detailMarkdown": "/public/projects/agent-eval-workbench/README.md"
+    },
+    {
+      "id": "air-quality-agent",
+      "number": "05",
+      "title": "多城市空气质量监测与智能问答 Agent",
+      "type": "省级大创 / LLM Agent",
+      "role": "核心成员 / Agent 与 RAG",
+      "period": "2024.09 - 2025.06",
+      "stack": ["LangGraph", "Pandas", "scikit-learn", "RAG", "Chroma", "MCP", "FastAPI", "SQLite", "Docker"],
+      "summary": "基于 6 个城市 52,704 条小时级空气质量数据，构建覆盖实时查询、24h 预测、综合预警、相关性分析与政策检索的工具调用 Agent。",
+      "challenge": [
+        "空气质量数据存在缺失值、时间粒度和城市指标口径不一致的问题。",
+        "工具数量达到 10 个后，规则和 LLM 都容易在相似问题上选错工具。",
+        "RAG 回答需要引用政策条款，低置信时还要主动拒答，避免编造标准编号。",
+        "问答链路缺少可追踪记录，bad case 难以定位和回归。"
+      ],
+      "solution": [
+        "完成多城市数据清洗、时间对齐与指标口径统一，并训练随机森林预测模型。",
+        "使用 LangGraph 构建 LLM Agent，同时保留规则版自动降级路径；通过 MCP 暴露 stdio 与 streamable-http 两种传输方式。",
+        "将 10 个工具统一封装为结构化 Schema，并引入 RAG 引用溯源、低置信拒答和数据约束三层幻觉控制。",
+        "设计覆盖 10 个工具、含 12 条易混淆样本的 60 条回归评测集，并迭代解决 12 条 bad case。",
+        "用 SQLite 记录问题、工具调用、回答、延迟和 token，将 bad case 查找与回归验证流程闭环。"
+      ],
+      "impact": [
+        "规则模式工具选择从 48/60 提升到 60/60，准确率 80% → 100%。",
+        "LLM 模式工具选择从 49/60 提升到 58/60，准确率 81.7% → 96.7%，0 调用失败。",
+        "Agent、RAG、日报和 MCP 服务通过 FastAPI、Docker 与 SQLite 完成落地。"
+      ],
+      "highlight": "工具调用评测、RAG 溯源与可观测性",
+      "detailMarkdown": "/public/projects/air-quality-agent/README.md"
+    },
+    {
+      "id": "pcba-defect-detection-repro",
+      "number": "06",
+      "title": "PCBA 缺陷检测：全流程复现与标注同步增广",
+      "type": "课程项目复现 / 工业缺陷检测",
+      "role": "复现与改进（数据管线、模型训练、A/B 实验）",
+      "period": "2026.09",
+      "stack": ["Python", "PaddlePaddle", "YOLOv3", "Darknet53", "OpenCV", "VOC 数据集", "mAP", "A/B 实验"],
+      "summary": "手写 Darknet53 + YOLOv3 跑通 PCBA 表面缺陷检测全流程，并补上原实验最致命的缺陷——几何增广不同步改写 XML 标注框；用控制变量的 A/B 实验量化标注同步增广的价值，同时记录下中文路径静默失败等一批工程坑。",
+      "challenge": [
+        "原实验数据增广只产出图片、从不更新 bndbox，增广图等于废数据，无法参与训练。",
+        "瑕疵框中位仅 73x73 像素、占整图 0.11%，属于典型小目标，缩放到 320 输入后只剩几个像素。",
+        "本机没有 GPU，只能用 8 核 CPU 复现原本 100 epoch / 640 输入的训练，必须缩小规模并证明结论仍然成立。",
+        "数据集 600 张全部欠曝（灰度均值 97.9~123，均低于标准 128），采集端问题会直接压低模型上限。"
+      ],
+      "solution": [
+        "手写 Darknet53 + YOLOv3（61.6M 参数、三尺度检测、paddle.vision.ops.yolo_loss），完整复现训练/评估/预测/导出。",
+        "实现标注同步增广：按变换类型逐框换算坐标，翻转交换 xmin/xmax，裁剪后 clip、丢弃残框、贴边框标 truncated，并且只增广训练集。",
+        "写两层自动校验代替肉眼看图：逐框边界检查 + 框内像素与「原图对应区域按同样变换后的结果」比对（误差 3~5/255）。",
+        "按类别缺口贪心补样本，把训练集从 350 张扩到 548 张，最少类样本从 350 提到 548，类别不再失衡。",
+        "设计控制变量 A/B 实验：相同随机种子初始化、相同 528 步、相同超参与验证集，唯一变量是训练集。"
+      ],
+      "impact": [
+        "复现结果与原版口径一致：验证 loss 90~121，与原版 epoch 99 的 104.47 同量级；算力受限下最优 mAP 1.89%。",
+        "A/B 实验：增广组 mAP 2.56% vs 原图组 2.07%，验证 loss 90.58 vs 98.61。",
+        "增益集中在被定向增广的少数类：skewing 的 AP 从 0.63% 提升到 5.05%；样本最多的 short 类反而原图组更高，符合「增广补短板」的预期。",
+        "定位并修复 5 类工程问题：OpenCV 中文路径静默失败、Paddle 静态图导出中文路径 mkdir failed、Paddle 缓存目录权限、验证环节漏 no_grad 导致内存暴涨、原脚本空结果 json 序列化崩溃。"
+      ],
+      "highlight": "标注同步增广 + 控制变量 A/B + 诚实的局限说明",
+      "detailMarkdown": "/public/projects/pcba-defect-detection-repro/README.md"
+    }
+  ]
+}
