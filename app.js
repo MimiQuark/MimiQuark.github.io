@@ -1,10 +1,6 @@
 let portfolioData = window.portfolioDataFallback || { page: {}, projects: [], notes: [] };
 
-const state = {
-  noteFilter: "全部",
-  noteQuery: ""
-};
-
+const state = { feedTab: "notes", noteFilter: "全部", noteQuery: "" };
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 let lastFocusedElement = null;
@@ -23,344 +19,282 @@ function setText(id, value) {
   if (element && value !== undefined && value !== null) element.textContent = value;
 }
 
+function setHref(id, value) {
+  const element = document.getElementById(id);
+  if (!element) return;
+  const url = safeUrl(value);
+  element.href = url === "#" ? "#" : url;
+  element.hidden = url === "#";
+}
+
+function iconSymbol(name) {
+  return ({ heart: "♥", comment: "●", bookmark: "◆", rank: "↗", article: "▤", brain: "✦", gear: "⚙" })[name] || "•";
+}
+
+function metricNumber(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number.toLocaleString("zh-CN") : String(value || fallback);
+}
+
 function renderPage() {
   const page = portfolioData.page || {};
-  const blogName = page.blogName || "项目与经验";
-  setText("brandName", blogName);
-  setText("heroEyebrow", page.heroEyebrow || "PROJECTS & LESSONS");
-  setText("heroSummary", page.heroSummary || "");
-  setText("projectsButtonLabel", page.projectsButtonLabel || "浏览项目");
-  setText("notesButtonLabel", page.notesButtonLabel || "阅读经验总结");
-  setText("projectsEyebrow", page.projectsEyebrow || "01 / PROJECTS");
-  setText("projectsTitle", page.projectsTitle || "项目记录");
-  setText("projectsIntro", page.projectsIntro || "");
-  setText("notesEyebrow", page.notesEyebrow || "02 / NOTES");
-  setText("notesTitle", page.notesTitle || "经验总结");
-  setText("notesIntro", page.notesIntro || "");
-  setText("footerName", blogName);
-
-  const heroTitle = $("#heroTitle");
-  if (heroTitle) {
-    heroTitle.innerHTML = escapeHtml(page.heroTitleLead || "记录项目，") + "<br><span>" + escapeHtml(page.heroTitleAccent || "也记录解决问题的方法。") + "</span>";
-  }
-
-  const heroTags = $("#heroTags");
-  if (heroTags) {
-    const tags = Array.isArray(page.heroTags) ? page.heroTags : [];
-    heroTags.innerHTML = tags.map(function (item) {
-      return "<span>" + escapeHtml(item) + "</span>";
-    }).join("");
-  }
-
+  const profile = page.profile || {};
   const author = page.author || {};
-  setText("authorAvatar", author.avatarText || "Z");
-  setText("authorName", author.displayName || "Z.");
-  setText("authorHeadline", author.headline || "");
-  setText("authorBio", author.bio || "");
-  const authorTopics = $("#authorTopics");
-  if (authorTopics) {
-    authorTopics.innerHTML = (author.topics || []).map(function (item) {
-      return "<span>" + escapeHtml(item) + "</span>";
-    }).join("");
-  }
-  const blogStats = $("#blogStats");
-  if (blogStats) {
-    const projectsCount = (portfolioData.projects || []).length;
-    const articlesCount = (portfolioData.notes || []).length;
-    const topicCount = new Set((portfolioData.notes || []).map(function (note) { return note.category; }).filter(Boolean)).size;
-    blogStats.innerHTML = [
-      { value: articlesCount, label: "篇文章" },
-      { value: projectsCount, label: "个项目" },
-      { value: topicCount, label: "个分类" }
-    ].map(function (metric) {
-      return "<div><strong>" + escapeHtml(metric.value) + "</strong><span>" + escapeHtml(metric.label) + "</span></div>";
-    }).join("");
-  }
+  const notes = Array.isArray(portfolioData.notes) ? portfolioData.notes : [];
+  const projects = Array.isArray(portfolioData.projects) ? portfolioData.projects : [];
+  const blogName = page.blogName || "MimiQuark 技术博客";
+  const displayName = profile.displayName || author.displayName || "MimiQuark";
+  const avatarImage = profile.avatarImage || "";
+  const avatarText = profile.avatarText || author.avatarText || "MQ";
+  const stats = Array.isArray(profile.stats) && profile.stats.length ? profile.stats : [
+    { label: "总访问量", value: "0" },
+    { label: "原创", value: notes.length },
+    { label: "项目", value: projects.length },
+    { label: "分类", value: new Set(notes.map(item => item.category).filter(Boolean)).size }
+  ];
+  const achievements = Array.isArray(profile.achievements) ? profile.achievements : [];
+  const columns = Array.isArray(profile.columns) && profile.columns.length ? profile.columns : Array.from(
+    notes.reduce((map, note) => {
+      if (note.category) map.set(note.category, (map.get(note.category) || 0) + 1);
+      return map;
+    }, new Map())
+  ).map(([title, count]) => ({ title, count, icon: "article" }));
+  const interests = Array.isArray(profile.interests) ? profile.interests : [];
 
-  if (page.metaTitle) document.title = page.metaTitle;
+  document.title = page.metaTitle || blogName;
   const description = document.querySelector('meta[name="description"]');
   if (description && page.metaDescription) description.setAttribute("content", page.metaDescription);
-}
+  setText("brandName", blogName);
+  setText("footerName", blogName);
+  setText("profileName", displayName);
+  setText("profileHeadline", profile.headline || author.headline || "");
+  setText("profileBio", profile.bio || author.bio || "");
+  setText("profileAvatarText", avatarText);
+  setText("feedSubtitle", page.feed && page.feed.subtitle ? page.feed.subtitle : "记录项目过程、问题排查与工程复盘。");
 
-function renderProjects() {
-  const projects = Array.isArray(portfolioData.projects) ? portfolioData.projects : [];
-  const featuredTarget = $("#featuredProject");
-  const gridTarget = $("#projectGrid");
-  if (!featuredTarget || !gridTarget) return;
-
-  if (!projects.length) {
-    featuredTarget.innerHTML = "";
-    gridTarget.innerHTML = "";
-    return;
+  const avatar = $("#profileAvatarImage");
+  if (avatar && avatarImage) {
+    avatar.src = avatarImage;
+    avatar.alt = displayName;
+    avatar.hidden = false;
+    const text = $("#profileAvatarText");
+    if (text) text.hidden = true;
   }
 
-  const featured = projects[0];
-  featuredTarget.innerHTML =
-    '<div class="project-visual visual-main" aria-hidden="true">' +
-      '<div class="visual-toolbar"><i></i><i></i><i></i><span>project / overview</span></div>' +
-      '<div class="visual-dashboard">' +
-        '<div class="visual-sidebar"><span></span><span></span><span></span><span></span></div>' +
-        '<div class="visual-content">' +
-          '<div class="visual-head"><span></span><strong></strong></div>' +
-          '<div class="visual-cards"><i></i><i></i><i></i></div>' +
-          '<div class="visual-chart"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>' +
-        '</div>' +
-      '</div>' +
-      '<div class="visual-note">' + escapeHtml(featured.highlight || "项目复盘") + '</div>' +
-    '</div>' +
-    '<div class="featured-copy">' +
-      '<div class="project-topline"><span>' + escapeHtml(featured.type || "项目") + '</span><span>' + escapeHtml(featured.period || "") + '</span></div>' +
-      '<p class="project-role">' + escapeHtml(featured.role || "参与角色") + '</p>' +
-      '<h3>' + escapeHtml(featured.title || "") + '</h3>' +
-      '<p>' + escapeHtml(featured.summary || "") + '</p>' +
-      '<div class="project-facts">' +
-        '<div><span>主要难点</span><strong>' + escapeHtml((featured.challenge || [])[0] || "") + '</strong></div>' +
-        '<div><span>解决方式</span><strong>' + escapeHtml((featured.solution || [])[0] || "") + '</strong></div>' +
-        '<div><span>最终结果</span><strong>' + escapeHtml((featured.impact || [])[0] || "") + '</strong></div>' +
-      '</div>' +
-      '<div class="stack-row">' + (featured.stack || []).map(function (item) { return "<span>" + escapeHtml(item) + "</span>"; }).join("") + '</div>' +
-      '<button class="detail-button" type="button" data-project="' + escapeHtml(featured.id) + '">查看完整项目拆解 <span>↗</span></button>' +
-    '</div>';
+  const cover = $("#profileCover");
+  if (cover && profile.coverImage) {
+    cover.style.backgroundImage = 'url("' + String(profile.coverImage).replaceAll('"', '%22') + '")';
+    cover.classList.add("has-image");
+  }
 
-  gridTarget.innerHTML = projects.slice(1).map(function (project, index) {
-    return '<article class="project-card reveal">' +
-      '<div class="project-card-top"><span>' + escapeHtml(project.type || "项目") + '</span><strong>0' + (index + 2) + '</strong></div>' +
-      '<p class="project-role">' + escapeHtml(project.role || "参与角色") + (project.period ? " · " + escapeHtml(project.period) : "") + '</p>' +
-      '<h3>' + escapeHtml(project.title || "") + '</h3>' +
-      '<p>' + escapeHtml(project.summary || "") + '</p>' +
-      '<div class="project-mini-block"><span>关键问题</span><p>' + escapeHtml((project.challenge || [])[0] || "") + '</p></div>' +
-      '<div class="project-mini-block"><span>解决与结果</span><p>' + escapeHtml((project.impact || [])[0] || "") + '</p></div>' +
-      '<div class="stack-row">' + (project.stack || []).map(function (item) { return "<span>" + escapeHtml(item) + "</span>"; }).join("") + '</div>' +
-      '<button class="text-button" type="button" data-project="' + escapeHtml(project.id) + '">项目详情 <span>→</span></button>' +
-    '</article>';
-  }).join("");
+  const badges = $("#profileBadges");
+  if (badges) {
+    const items = Array.isArray(profile.badges) ? profile.badges : (author.topics || []);
+    badges.innerHTML = items.map(item => "<span>" + escapeHtml(item) + "</span>").join("");
+  }
+
+  const statTarget = $("#profileStats");
+  if (statTarget) statTarget.innerHTML = stats.map(item =>
+    '<div class="profile-stat"><strong>' + escapeHtml(metricNumber(item.value)) + '</strong><span>' + escapeHtml(item.label) + '</span></div>'
+  ).join("");
+
+  const meta = $("#profileMeta");
+  if (meta) {
+    const parts = [];
+    if (profile.location) parts.push("<span>⌖ IP 属地：" + escapeHtml(profile.location) + "</span>");
+    if (profile.joinedAt) parts.push("<span>◷ 加入时间：" + escapeHtml(profile.joinedAt) + "</span>");
+    parts.push("<span>⌘ 内容由 Pages CMS 管理</span>");
+    meta.innerHTML = parts.join("");
+  }
+
+  const achievementsTarget = $("#achievementList");
+  if (achievementsTarget) achievementsTarget.innerHTML = achievements.map((item, index) =>
+    '<div class="achievement-item"><i class="achievement-icon ' + ["blue", "green", "purple", ""][index % 4] + '">' + escapeHtml(iconSymbol(item.icon)) + '</i><span>' + escapeHtml(item.label) + '</span><strong>' + escapeHtml(item.value) + '</strong></div>'
+  ).join("");
+
+  const columnsTarget = $("#columnList");
+  if (columnsTarget) columnsTarget.innerHTML = columns.map(item =>
+    '<button class="column-item" type="button" data-column="' + escapeHtml(item.title) + '"><i class="column-icon">' + escapeHtml(iconSymbol(item.icon)) + '</i><span>' + escapeHtml(item.title) + '</span><strong>' + escapeHtml(item.count || 0) + ' 篇</strong></button>'
+  ).join("");
+
+  const interestsTarget = $("#interestList");
+  if (interestsTarget) interestsTarget.innerHTML = interests.map(item =>
+    '<section class="interest-item"><h3>' + escapeHtml(item.title) + '</h3><div class="interest-tags">' + (item.tags || []).map(tag => "<span>" + escapeHtml(tag) + "</span>").join("") + '</div></section>'
+  ).join("");
+
+  const adminUrl = page.adminUrl || "https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main";
+  ["adminLink", "profileAdminButton", "footerAdminLink"].forEach(id => setHref(id, adminUrl));
+  const searchPlaceholder = page.feed && page.feed.searchPlaceholder ? page.feed.searchPlaceholder : "搜索文章、项目或技术关键词…";
+  ["siteSearch", "noteSearch"].forEach(id => { const input = document.getElementById(id); if (input) input.placeholder = searchPlaceholder; });
+  renderFeedTabs();
+  renderFeedFilters();
 }
 
-function renderNoteFilters() {
-  const notes = Array.isArray(portfolioData.notes) ? portfolioData.notes : [];
-  const categories = ["全部"].concat([...new Set(notes.map(function (note) { return note.category; }).filter(Boolean))]);
-  const target = $("#noteFilters");
+function renderFeedTabs() {
+  const page = portfolioData.page || {};
+  const labels = page.feed || {};
+  const target = $("#feedTabs");
   if (!target) return;
-  target.innerHTML = categories.map(function (category) {
-    return '<button class="filter-chip' + (category === state.noteFilter ? " active" : "") + '" type="button" data-filter="' + escapeHtml(category) + '">' + escapeHtml(category) + '</button>';
-  }).join("");
+  const tabs = [
+    { id: "notes", label: labels.notesTabLabel || "最新文章" },
+    { id: "projects", label: labels.projectsTabLabel || "项目记录" }
+  ];
+  target.innerHTML = tabs.map(tab =>
+    '<button class="feed-tab ' + (state.feedTab === tab.id ? "active" : "") + '" type="button" role="tab" aria-selected="' + (state.feedTab === tab.id ? "true" : "false") + '" data-feed-tab="' + tab.id + '">' + escapeHtml(tab.label) + '</button>'
+  ).join("");
+  navTabState();
 }
 
-function renderNotes() {
+function navTabState() {
+  $$(".nav-link[data-nav-tab]").forEach(link => link.classList.toggle("active", link.dataset.navTab === state.feedTab));
+}
+
+function noteCategories() {
   const notes = Array.isArray(portfolioData.notes) ? portfolioData.notes : [];
-  const query = state.noteQuery.trim().toLowerCase();
-  const filtered = notes.filter(function (note) {
-    const matchesCategory = state.noteFilter === "全部" || note.category === state.noteFilter;
-    const sectionText = (note.sections || []).map(function (section) { return (section.heading || "") + " " + (section.content || ""); }).join(" ");
-    const searchable = [note.title, note.excerpt, note.category, sectionText].join(" ").toLowerCase();
-    return matchesCategory && searchable.includes(query);
-  });
+  return ["全部"].concat(Array.from(new Set(notes.map(note => note.category).filter(Boolean))));
+}
 
-  const target = $("#notesGrid");
-  if (target) {
-    target.innerHTML = filtered.map(function (note, index) {
-      const coverStyle = note.coverImage ? ' style="background-image:url(' + escapeHtml(note.coverImage) + ')"' : "";
-      const coverClass = note.coverImage ? " has-image" : "";
-      return '<article class="note-card reveal visible" style="animation-delay:' + (index * 45) + 'ms">' +
-        '<div class="note-cover cover-' + (index % 4 + 1) + coverClass + '"' + coverStyle + '><span>' + escapeHtml(note.category || "经验") + '</span><strong>' + escapeHtml(note.number || "") + '</strong></div>' +
-        '<div class="note-body">' +
-          '<div class="note-meta"><span>' + escapeHtml(note.date || "") + '</span><span>' + escapeHtml(note.readTime || "") + '</span></div>' +
-          '<h3>' + escapeHtml(note.title || "") + '</h3>' +
-          '<p>' + escapeHtml(note.excerpt || "") + '</p>' +
-          '<button class="text-button" type="button" data-note="' + escapeHtml(note.id) + '">阅读复盘 <span>→</span></button>' +
-        '</div>' +
-      '</article>';
-    }).join("");
+function renderFeedFilters() {
+  const target = $("#feedFilters");
+  if (!target) return;
+  if (state.feedTab !== "notes") { target.innerHTML = ""; return; }
+  target.innerHTML = noteCategories().map(category =>
+    '<button class="filter-chip ' + (category === state.noteFilter ? "active" : "") + '" type="button" data-filter="' + escapeHtml(category) + '">' + escapeHtml(category) + '</button>'
+  ).join("");
+}
+
+function searchableNote(note) {
+  const sectionText = (note.sections || []).map(section => (section.heading || "") + " " + (section.content || "")).join(" ");
+  return [note.title, note.excerpt, note.category, note.lead, sectionText].join(" ").toLowerCase();
+}
+
+function renderFeed() {
+  const page = portfolioData.page || {};
+  const feed = page.feed || {};
+  setText("feedTitle", state.feedTab === "projects" ? (feed.projectsTabLabel || "项目记录") : (feed.notesTabLabel || "最新文章"));
+  setText("feedSubtitle", state.feedTab === "projects" ? "项目背景、职责、关键难点与解决方案。" : (feed.subtitle || "记录项目过程、问题排查与工程复盘。"));
+  renderFeedTabs();
+  renderFeedFilters();
+  const target = $("#feedList");
+  if (!target) return;
+  target.innerHTML = state.feedTab === "projects" ? renderProjectItems() : renderNoteItems();
+  const empty = $("#feedEmpty");
+  if (empty) {
+    empty.hidden = target.innerHTML.trim() !== "";
+    const strong = $("strong", empty);
+    if (strong) strong.textContent = feed.emptyText || "没有找到匹配内容";
   }
+}
 
-  const empty = $("#notesEmpty");
-  if (empty) empty.hidden = filtered.length !== 0;
-  if (target) target.hidden = filtered.length === 0;
+function renderNoteItems() {
+  const query = state.noteQuery.trim().toLowerCase();
+  const notes = (Array.isArray(portfolioData.notes) ? portfolioData.notes : []).filter(note => {
+    const matchesCategory = state.noteFilter === "全部" || note.category === state.noteFilter;
+    return matchesCategory && (!query || searchableNote(note).includes(query));
+  });
+  return notes.map((note, index) =>
+    '<article class="feed-item note-feed-item">' +
+      '<div class="feed-tile" style="background:' + ["#315d9d", "#2f7b68", "#6d5db4", "#b45d33"][index % 4] + '"><strong>' + escapeHtml("#" + (note.category || "文章")) + '</strong><span>' + escapeHtml(note.number || "") + '</span></div>' +
+      '<div class="feed-copy">' +
+        '<button class="feed-title" type="button" data-note="' + escapeHtml(note.id) + '">' + escapeHtml(note.title || "") + '</button>' +
+        '<p class="feed-excerpt">' + escapeHtml(note.excerpt || note.lead || "") + '</p>' +
+        '<div class="feed-meta"><strong>原创</strong><span>更新于 ' + escapeHtml(note.date || "未设置") + '</span><span>' + escapeHtml(metricNumber(note.views || 0)) + ' 阅读</span><span>' + escapeHtml(metricNumber(note.likes || 0)) + ' 点赞</span><span>' + escapeHtml(metricNumber(note.comments || 0)) + ' 评论</span><span>' + escapeHtml(metricNumber(note.bookmarks || 0)) + ' 收藏</span></div>' +
+        '<div class="feed-actions"><button class="feed-action" type="button" data-note="' + escapeHtml(note.id) + '">阅读全文</button><span class="feed-action">' + escapeHtml(note.readTime || "阅读") + '</span></div>' +
+      '</div>' +
+    '</article>'
+  ).join("");
+}
+
+function renderProjectItems() {
+  const query = state.noteQuery.trim().toLowerCase();
+  const projects = (Array.isArray(portfolioData.projects) ? portfolioData.projects : []).filter(project =>
+    !query || [project.title, project.summary, project.type, (project.stack || []).join(" ")].join(" ").toLowerCase().includes(query)
+  );
+  return projects.map((project, index) =>
+    '<article class="feed-item project-feed-item">' +
+      '<div class="feed-tile" style="background:' + ["#2f7b68", "#315d9d", "#b45d33", "#6d5db4"][index % 4] + '"><strong>#' + escapeHtml(project.type || "项目") + '</strong><span>' + escapeHtml(project.number || "") + '</span></div>' +
+      '<div class="feed-copy">' +
+        '<button class="feed-title" type="button" data-project="' + escapeHtml(project.id) + '">' + escapeHtml(project.title || "") + '</button>' +
+        '<p class="feed-excerpt">' + escapeHtml(project.summary || "") + '</p>' +
+        '<div class="feed-meta"><strong>' + escapeHtml(project.role || "项目记录") + '</strong><span>' + escapeHtml(project.period || "") + '</span><span>' + escapeHtml((project.stack || []).slice(0, 4).join(" · ")) + '</span></div>' +
+        '<div class="feed-actions"><button class="feed-action" type="button" data-project="' + escapeHtml(project.id) + '">查看项目拆解</button><span class="feed-action">' + escapeHtml(project.highlight || "项目复盘") + '</span></div>' +
+      '</div>' +
+    '</article>'
+  ).join("");
 }
 
 function safeUrl(value) {
   const url = String(value || "").trim();
-  if (url.startsWith("/") || url.startsWith("https://") || url.startsWith("http://")) {
-    return escapeHtml(url);
-  }
+  if (url.startsWith("/") || url.startsWith("https://") || url.startsWith("http://")) return escapeHtml(url);
   return "#";
 }
 
 function renderInlineMarkdown(value) {
   let output = escapeHtml(value);
-  output = output.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function (_, alt, url) {
-    return '<img src="' + safeUrl(url) + '" alt="' + alt + '" loading="lazy">';
-  });
-  output = output.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (_, label, url) {
-    return '<a href="' + safeUrl(url) + '" target="_blank" rel="noopener">' + label + "</a>";
-  });
-  output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  output = output.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, '<img src="$2" alt="$1">');
+  output = output.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
   output = output.replace(/`([^`]+)`/g, "<code>$1</code>");
+  output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   return output;
 }
 
 function renderMarkdown(markdown) {
   const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
   const html = [];
-  let index = 0;
-  let listType = "";
   let inCode = false;
-  let codeLines = [];
-
-  function closeList() {
-    if (!listType) return;
-    html.push(listType === "ol" ? "</ol>" : "</ul>");
-    listType = "";
-  }
-
-  while (index < lines.length) {
-    const line = lines[index];
-    const trimmed = line.trim();
-
-    if (trimmed.startsWith("```")) {
-      closeList();
-      if (inCode) {
-        html.push("<pre><code>" + escapeHtml(codeLines.join("\n")) + "</code></pre>");
-        codeLines = [];
-        inCode = false;
-      } else {
-        inCode = true;
-      }
-      index += 1;
+  let code = [];
+  let listType = null;
+  const closeList = () => { if (listType) { html.push("</" + listType + ">"); listType = null; } };
+  for (let index = 0; index < lines.length; index += 1) {
+    const raw = lines[index];
+    const line = raw.trim();
+    if (line.startsWith("```")) {
+      if (inCode) { html.push("<pre><code>" + escapeHtml(code.join("\n")) + "</code></pre>"); code = []; inCode = false; }
+      else { closeList(); inCode = true; }
       continue;
     }
-
-    if (inCode) {
-      codeLines.push(line);
-      index += 1;
-      continue;
-    }
-
-    if (!trimmed) {
-      closeList();
-      index += 1;
-      continue;
-    }
-
-    if (/^\|/.test(trimmed) && index + 1 < lines.length && /^\|[\s:\-|]+\|$/.test(lines[index + 1].trim())) {
-      closeList();
-      const header = trimmed.slice(1, -1).split("|").map(function (cell) { return cell.trim(); });
-      const rows = [];
-      index += 2;
-      while (index < lines.length && /^\|/.test(lines[index].trim())) {
-        rows.push(lines[index].trim().slice(1, -1).split("|").map(function (cell) { return cell.trim(); }));
-        index += 1;
-      }
-      html.push("<div class=\"markdown-table-wrap\"><table><thead><tr>" + header.map(function (cell) {
-        return "<th>" + renderInlineMarkdown(cell) + "</th>";
-      }).join("") + "</tr></thead><tbody>" + rows.map(function (row) {
-        return "<tr>" + row.map(function (cell) { return "<td>" + renderInlineMarkdown(cell) + "</td>"; }).join("") + "</tr>";
-      }).join("") + "</tbody></table></div>");
-      continue;
-    }
-
-    const heading = trimmed.match(/^(#{1,4})\s+(.+)$/);
-    if (heading) {
-      closeList();
-      const level = heading[1].length;
-      html.push("<h" + level + ">" + renderInlineMarkdown(heading[2]) + "</h" + level + ">");
-      index += 1;
-      continue;
-    }
-
-    if (/^---+$/.test(trimmed)) {
-      closeList();
-      html.push("<hr>");
-      index += 1;
-      continue;
-    }
-
-    if (trimmed.startsWith("> ")) {
-      closeList();
-      html.push("<blockquote>" + renderInlineMarkdown(trimmed.slice(2)) + "</blockquote>");
-      index += 1;
-      continue;
-    }
-
-    const unordered = trimmed.match(/^- (.+)$/);
-    const ordered = trimmed.match(/^\d+\. (.+)$/);
+    if (inCode) { code.push(raw); continue; }
+    if (!line) { closeList(); continue; }
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+    if (heading) { closeList(); html.push("<h" + heading[1].length + ">" + renderInlineMarkdown(heading[2]) + "</h" + heading[1].length + ">"); continue; }
+    if (/^---+$/.test(line)) { closeList(); html.push("<hr>"); continue; }
+    if (/^>\s+/.test(line)) { closeList(); html.push("<blockquote>" + renderInlineMarkdown(line.replace(/^>\s+/, "")) + "</blockquote>"); continue; }
+    const unordered = line.match(/^[-*]\s+(.+)$/);
+    const ordered = line.match(/^\d+\.\s+(.+)$/);
     if (unordered || ordered) {
-      const nextListType = unordered ? "ul" : "ol";
-      if (listType !== nextListType) {
-        closeList();
-        listType = nextListType;
-        html.push("<" + listType + ">");
-      }
+      const nextType = unordered ? "ul" : "ol";
+      if (listType !== nextType) { closeList(); listType = nextType; html.push("<" + listType + ">"); }
       html.push("<li>" + renderInlineMarkdown((unordered || ordered)[1]) + "</li>");
-      index += 1;
       continue;
     }
-
-    if (/^!\[[^\]]*\]\([^)]+\)$/.test(trimmed)) {
-      closeList();
-      html.push("<figure>" + renderInlineMarkdown(trimmed) + "</figure>");
-      index += 1;
-      continue;
-    }
-
-    if (/^<video\b[\s\S]*<\/video>$/i.test(trimmed)) {
-      closeList();
-      html.push(trimmed);
-      index += 1;
-      continue;
-    }
-
+    if (/^!\[[^\]]*\]\([^)]+\)$/.test(line)) { closeList(); html.push("<figure>" + renderInlineMarkdown(line) + "</figure>"); continue; }
+    if (/^<video\b[\s\S]*<\/video>$/i.test(line)) { closeList(); html.push(line); continue; }
     closeList();
-    const paragraph = [trimmed];
-    index += 1;
-    while (index < lines.length) {
-      const next = lines[index].trim();
-      if (!next || /^(#{1,4})\s+/.test(next) || /^[-*]\s+/.test(next) || /^\d+\.\s+/.test(next) || /^!\[[^\]]*\]\([^)]+\)$/.test(next)) break;
-      paragraph.push(next);
-      index += 1;
-    }
-    html.push("<p>" + renderInlineMarkdown(paragraph.join(" ")) + "</p>");
+    html.push("<p>" + renderInlineMarkdown(line) + "</p>");
   }
-
   closeList();
-  if (inCode) html.push("<pre><code>" + escapeHtml(codeLines.join("\n")) + "</code></pre>");
+  if (inCode) html.push("<pre><code>" + escapeHtml(code.join("\n")) + "</code></pre>");
   return html.join("");
 }
 
 function renderRichContent(rawContent) {
-  if (Array.isArray(rawContent)) {
-    return "<ul>" + rawContent.map(function (item) { return "<li>" + escapeHtml(item) + "</li>"; }).join("") + "</ul>";
-  }
+  if (Array.isArray(rawContent)) return "<ul>" + rawContent.map(item => "<li>" + escapeHtml(item) + "</li>").join("") + "</ul>";
   const text = String(rawContent || "").trim();
   if (text.startsWith("<")) return '<div class="rich-text">' + text + "</div>";
-  const lines = text.split("\n").map(function (line) { return line.trim(); }).filter(Boolean);
-  if (lines.length && lines.every(function (line) { return line.startsWith("- "); })) {
-    return "<ul>" + lines.map(function (line) { return "<li>" + escapeHtml(line.slice(2)) + "</li>"; }).join("") + "</ul>";
-  }
-  return text.split(/\n{2,}/).map(function (paragraph) {
-    return "<p>" + escapeHtml(paragraph.replace(/\n/g, " ")) + "</p>";
-  }).join("");
+  return "<p>" + renderInlineMarkdown(text).replaceAll("\n", "<br>") + "</p>";
 }
 
 async function openProject(id) {
-  const project = (portfolioData.projects || []).find(function (item) { return item.id === id; });
+  const project = (portfolioData.projects || []).find(item => item.id === id);
   if (!project) return;
   if (project.detailMarkdown) {
     try {
       const response = await fetch(project.detailMarkdown, { cache: "no-store" });
-      if (!response.ok) throw new Error("Project detail is unavailable");
+      if (!response.ok) throw new Error("Project detail unavailable");
       const markdown = await response.text();
-      openModal({
-        eyebrow: project.type || "项目",
-        number: project.number || "",
-        meta: [project.role, project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "),
-        title: project.title || "项目详情",
-        markdown: markdown
-      });
+      openModal({ eyebrow: project.type || "项目", number: project.number || "", meta: [project.role, project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "), title: project.title || "项目详情", markdown });
       return;
-    } catch (error) {
-      console.info("Using structured project summary.", error);
-    }
+    } catch (error) { console.info("Using project summary.", error); }
   }
   openModal({
     eyebrow: project.type || "项目",
@@ -370,44 +304,39 @@ async function openProject(id) {
     lead: project.summary || "",
     sections: [
       { heading: "遇到的问题", content: project.challenge || [] },
-      { heading: "解决过程", content: project.solution || [] },
+      { heading: "解决方法", content: project.solution || [] },
       { heading: "结果与复盘", content: project.impact || [] }
     ]
   });
 }
 
 function openNote(id) {
-  const note = (portfolioData.notes || []).find(function (item) { return item.id === id; });
+  const note = (portfolioData.notes || []).find(item => item.id === id);
   if (!note) return;
   openModal({
     eyebrow: note.category || "经验总结",
     number: note.number || "",
-    meta: [note.date, note.readTime].filter(Boolean).join(" · "),
-    title: note.title || "经验总结",
-    lead: note.lead || "",
+    meta: [note.date, note.readTime, note.views != null ? metricNumber(note.views) + " 阅读" : ""].filter(Boolean).join(" · "),
+    title: note.title || "文章详情",
+    lead: note.lead || note.excerpt || "",
     sections: note.sections || []
   });
 }
 
 function openModal(data) {
-  $("#modalEyebrow").textContent = data.eyebrow;
-  $("#modalNumber").textContent = data.number;
-  $("#modalMeta").textContent = data.meta;
-  $("#modalTitle").textContent = data.title;
-  $("#modalLead").textContent = data.lead || "";
   const panel = $(".modal-panel");
+  setText("modalEyebrow", data.eyebrow || "");
+  setText("modalNumber", data.number || "");
+  setText("modalMeta", data.meta || "");
+  setText("modalTitle", data.title || "");
+  setText("modalLead", data.lead || "");
+  const target = $("#modalSections");
   if (data.markdown) {
     panel.classList.add("markdown-mode");
-    $("#modalTitle").hidden = true;
-    $("#modalLead").hidden = true;
-    $("#modalSections").innerHTML = '<article class="project-markdown">' + renderMarkdown(data.markdown) + "</article>";
+    target.innerHTML = '<article class="project-markdown">' + renderMarkdown(data.markdown) + '</article>';
   } else {
     panel.classList.remove("markdown-mode");
-    $("#modalTitle").hidden = false;
-    $("#modalLead").hidden = false;
-    $("#modalSections").innerHTML = (data.sections || []).map(function (section) {
-      return '<section><h3>' + escapeHtml(section.heading || "") + '</h3>' + renderRichContent(section.content) + '</section>';
-    }).join("");
+    target.innerHTML = (data.sections || []).map(section => '<section><h3>' + escapeHtml(section.heading || "") + '</h3>' + renderRichContent(section.content) + '</section>').join("");
   }
   lastFocusedElement = document.activeElement;
   $("#detailModal").classList.add("open");
@@ -428,46 +357,41 @@ function setTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("project-notes-theme", theme);
   $(".theme-toggle").setAttribute("aria-label", theme === "dark" ? "切换浅色模式" : "切换深色模式");
-  $('meta[name="theme-color"]').setAttribute("content", theme === "dark" ? "#111713" : "#f5f3ed");
+  $('meta[name="theme-color"]').setAttribute("content", theme === "dark" ? "#111417" : "#f3f5f7");
 }
 
-document.addEventListener("click", function (event) {
-  const projectButton = event.target.closest("[data-project]");
+document.addEventListener("click", event => {
   const noteButton = event.target.closest("[data-note]");
+  const projectButton = event.target.closest("[data-project]");
   const filterButton = event.target.closest("[data-filter]");
-  if (projectButton) openProject(projectButton.dataset.project);
+  const tabButton = event.target.closest("[data-feed-tab]");
+  const columnButton = event.target.closest("[data-column]");
   if (noteButton) openNote(noteButton.dataset.note);
-  if (filterButton) {
-    state.noteFilter = filterButton.dataset.filter;
-    renderNoteFilters();
-    renderNotes();
-  }
+  if (projectButton) openProject(projectButton.dataset.project);
+  if (filterButton) { state.noteFilter = filterButton.dataset.filter; renderFeed(); }
+  if (tabButton) { state.feedTab = tabButton.dataset.feedTab; renderFeed(); document.getElementById("articles").scrollIntoView({ behavior: "smooth", block: "start" }); }
+  if (columnButton) { state.feedTab = "notes"; state.noteFilter = columnButton.dataset.column; renderFeed(); document.getElementById("articles").scrollIntoView({ behavior: "smooth", block: "start" }); }
   if (event.target.closest("[data-close-modal]")) closeModal();
 });
 
-$("#noteSearch").addEventListener("input", function (event) {
-  state.noteQuery = event.target.value;
-  renderNotes();
-});
-
-$(".theme-toggle").addEventListener("click", function () {
-  setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
-});
-
-const menuToggle = $(".menu-toggle");
-const mainNav = $(".main-nav");
-menuToggle.addEventListener("click", function () {
-  const open = mainNav.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(open));
-});
-$$(".main-nav a").forEach(function (link) {
-  link.addEventListener("click", function () {
-    mainNav.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
+["siteSearch", "noteSearch"].forEach(id => {
+  const input = document.getElementById(id);
+  if (!input) return;
+  input.addEventListener("input", event => {
+    state.noteQuery = event.target.value;
+    ["siteSearch", "noteSearch"].forEach(otherId => { const other = document.getElementById(otherId); if (other && other !== event.target) other.value = state.noteQuery; });
+    if (state.feedTab !== "notes" && !state.noteQuery) state.feedTab = "notes";
+    renderFeed();
   });
 });
 
-document.addEventListener("keydown", function (event) {
+$(".theme-toggle").addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"));
+const menuToggle = $(".menu-toggle");
+const mainNav = $(".main-nav");
+menuToggle.addEventListener("click", () => { const open = mainNav.classList.toggle("open"); menuToggle.setAttribute("aria-expanded", String(open)); });
+$$(".main-nav a").forEach(link => link.addEventListener("click", () => { mainNav.classList.remove("open"); menuToggle.setAttribute("aria-expanded", "false"); }));
+
+document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     if ($("#detailModal").classList.contains("open")) closeModal();
     mainNav.classList.remove("open");
@@ -476,33 +400,14 @@ document.addEventListener("keydown", function (event) {
 });
 
 const header = $("#siteHeader");
-const sections = $$("main section[id]");
-const navLinks = $$(".nav-link");
-window.addEventListener("scroll", function () {
+window.addEventListener("scroll", () => {
   header.classList.toggle("scrolled", window.scrollY > 16);
-  let current = "home";
-  sections.forEach(function (section) {
-    if (window.scrollY >= section.offsetTop - 160) current = section.id;
-  });
-  navLinks.forEach(function (link) {
-    link.classList.toggle("active", link.getAttribute("href") === "#" + current);
-  });
 }, { passive: true });
 
-const observer = new IntersectionObserver(function (entries) {
-  entries.forEach(function (entry) {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1 });
-
-function observeReveals() {
-  $$(".reveal").forEach(function (element) {
-    if (!element.classList.contains("visible")) observer.observe(element);
-  });
-}
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); } });
+}, { threshold: 0.08 });
+function observeReveals() { $$(".reveal").forEach(element => { if (!element.classList.contains("visible")) observer.observe(element); }); }
 
 async function loadManagedContent() {
   try {
@@ -511,26 +416,18 @@ async function loadManagedContent() {
       fetch("_data/projects.json", { cache: "no-store" }),
       fetch("_data/notes.json", { cache: "no-store" })
     ]);
-    if (responses.some(function (response) { return !response.ok; })) throw new Error("Managed content is unavailable");
+    if (responses.some(response => !response.ok)) throw new Error("Managed content unavailable");
     const site = await responses[0].json();
     const projects = await responses[1].json();
     const notes = await responses[2].json();
-    portfolioData = {
-      page: site.page || {},
-      projects: projects.items || [],
-      notes: notes.items || []
-    };
-  } catch (error) {
-    console.info("Using bundled fallback content.", error);
-  }
+    portfolioData = { page: site.page || {}, projects: projects.items || [], notes: notes.items || [] };
+  } catch (error) { console.info("Using bundled fallback content.", error); }
 }
 
 async function boot() {
   await loadManagedContent();
   renderPage();
-  renderProjects();
-  renderNoteFilters();
-  renderNotes();
+  renderFeed();
   observeReveals();
   setTheme(localStorage.getItem("project-notes-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
   $("#currentYear").textContent = new Date().getFullYear();

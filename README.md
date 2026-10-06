@@ -1,24 +1,30 @@
-# 项目与经验
+# MimiQuark 技术博客
 
-[![Website](https://img.shields.io/badge/website-online-brightgreen)](https://mimiquark.github.io)
+[![Website](https://img.shields.io/badge/website-online-brightgreen)](https://mimiquark.github.io/)
 
-这是一个只展示项目记录和经验总结的静态技术博客，不包含个人简历、求职状态、联系方式或工作经历。
+这是一个采用“个人资料 + 左侧数据栏 + 右侧文章流”布局的静态技术博客，不包含个人简历、求职状态、联系方式或工作经历。
 
-## 仓库定位
+## 页面布局
 
-- [可视化与可解释性](docs/VISUAL_GUIDE.md)：站点信息架构、内容流程、部署链路和页面预览
+- 顶部：博客导航、全站搜索和后台入口
+- 个人信息：头像、昵称、身份标签、访问量、原创、粉丝、关注和简介
+- 左侧栏：个人成就、我的专栏、兴趣领域
+- 右侧内容流：文章/项目切换、分类筛选、关键词搜索和详情弹窗
 
-本仓库用于维护个人项目案例与工程经验站点，重点展示项目过程和复盘，不替代各项目的源码仓库。
+桌面预览见 `preview-desktop.png`，移动端预览见 `preview-mobile.png`。
 
-## 在线管理
+## 后台管理
 
-正式网址：`https://mimiquark.github.io`
+正式网址：`https://mimiquark.github.io/`
 
-打开 `https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main`，可以编辑：
+打开 `https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main` 可以编辑：
 
-- 页面标题、首页说明、栏目标题和按钮文字
+- 博客名称、搜索提示、文章流与项目流文案
+- 公开昵称、头像、顶部背景图、简介、IP 属地、加入时间和身份标签
+- 访问量、原创、粉丝、关注等顶部统计
+- 个人成就、我的专栏和兴趣领域
 - 项目背景、参与角色、技术栈、问题、解决方法和复盘结果
-- 经验文章的分类、标题、摘要、封面和正文
+- 文章分类、标题、摘要、阅读量、点赞、评论、收藏和正文
 
 内容会保存到 `_data/`。提交后 GitHub Actions 会自动部署到 GitHub Pages。
 
@@ -29,4 +35,3 @@
 ## 部署
 
 发布分支为 `main`，GitHub Actions 工作流为 `.github/workflows/pages.yml`。
-

@@ -1,15 +1,11 @@
-/*
- * 项目与经验内容的离线备用数据。
- * 在线后台保存后，页面优先读取 _data 目录中的最新内容。
- */
 window.portfolioDataFallback = {
   "page": {
-    "metaTitle": "数据与模型工程笔记 | 多模态 SFT 与 LLM 应用",
-    "metaDescription": "记录多模态 SFT 数据构建、质量过滤、RAG、工具调用 Agent 与数据工程实践。",
+    "metaTitle": "MimiQuark 技术博客 | 工程笔记与项目复盘",
+    "metaDescription": "记录多模态 SFT 数据、LLM 应用、RAG、Agent 与数据工程实践。",
     "heroEyebrow": "DATA × LLM ENGINEERING",
     "heroTitleLead": "把数据和模型，",
     "heroTitleAccent": "做成可复现、可评测的工程。",
-    "heroSummary": "这里记录多模态 SFT 数据构建、质量过滤、RAG、工具调用 Agent 与多源数据清洗中的方案取舍、评测方法和问题复盘。",
+    "heroSummary": "记录项目过程、问题排查与工程复盘。所有展示内容均可在 Pages CMS 后台编辑。",
     "projectsButtonLabel": "浏览项目",
     "notesButtonLabel": "阅读经验总结",
     "heroTags": [
@@ -25,7 +21,7 @@ window.portfolioDataFallback = {
     "notesEyebrow": "02 / NOTES",
     "notesTitle": "经验总结",
     "notesIntro": "不只写结论，也记录数据为什么失真、评测如何设计，以及问题最终怎样复现和修复。",
-    "blogName": "数据与模型工程笔记",
+    "blogName": "MimiQuark 技术博客",
     "author": {
       "displayName": "MimiJimmy",
       "avatarText": "Z",
@@ -39,6 +35,111 @@ window.portfolioDataFallback = {
         "Agent",
         "Docker"
       ]
+    },
+    "adminUrl": "https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main",
+    "profile": {
+      "displayName": "MimiQuark",
+      "avatarImage": "",
+      "avatarText": "MQ",
+      "coverImage": "",
+      "headline": "多模态数据、SFT 与 LLM 应用工程",
+      "bio": "人工智能本科，关注多模态数据处理、SFT 数据质量、RAG、工具调用 Agent 与数据工程实践。",
+      "location": "广东",
+      "joinedAt": "2026-10",
+      "badges": [
+        "Python",
+        "LLM",
+        "Data Engineering"
+      ],
+      "stats": [
+        {
+          "label": "总访问量",
+          "value": "7,681"
+        },
+        {
+          "label": "原创",
+          "value": "17"
+        },
+        {
+          "label": "粉丝",
+          "value": "36"
+        },
+        {
+          "label": "关注",
+          "value": "37"
+        }
+      ],
+      "achievements": [
+        {
+          "label": "获得点赞",
+          "value": "164",
+          "icon": "heart"
+        },
+        {
+          "label": "获得评论",
+          "value": "1",
+          "icon": "comment"
+        },
+        {
+          "label": "获得收藏",
+          "value": "112",
+          "icon": "bookmark"
+        },
+        {
+          "label": "博客总排名",
+          "value": "45,497",
+          "icon": "rank"
+        }
+      ],
+      "columns": [
+        {
+          "title": "调研报告",
+          "count": 2,
+          "icon": "article"
+        },
+        {
+          "title": "机器学习",
+          "count": 4,
+          "icon": "brain"
+        },
+        {
+          "title": "环境配置",
+          "count": 2,
+          "icon": "gear"
+        }
+      ],
+      "interests": [
+        {
+          "title": "Python",
+          "tags": [
+            "python",
+            "scikit-learn",
+            "matplotlib"
+          ]
+        },
+        {
+          "title": "大数据",
+          "tags": [
+            "sql",
+            "spark",
+            "data engineering"
+          ]
+        },
+        {
+          "title": "人工智能",
+          "tags": [
+            "computer vision",
+            "machine learning",
+            "LLM"
+          ]
+        }
+      ]
+    },
+    "feed": {
+      "searchPlaceholder": "搜索文章、项目或技术关键词…",
+      "notesTabLabel": "最新文章",
+      "projectsTabLabel": "项目记录",
+      "emptyText": "没有找到匹配内容"
     }
   },
   "projects": [
@@ -302,7 +403,11 @@ window.portfolioDataFallback = {
           "heading": "结果与复盘",
           "content": "改为 MD5 后实现零误删。这个问题的教训不是“dHash 不好”，而是去重规则必须服务数据目标。感知哈希适合近似图片检索，但不适合作为“是否应该保留训练样本”的唯一判断。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "agent-tool-evaluation",
@@ -331,7 +436,11 @@ window.portfolioDataFallback = {
           "heading": "结果与反思",
           "content": "规则模式从 80% 提升到 100%，LLM 模式从 81.7% 提升到 96.7%。比指标更重要的是，我们保留了一套可以重复运行的评测集，让后续修改 Prompt 或新增工具时能够快速发现回归。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "multimodal-sft-pipeline",
@@ -360,7 +469,11 @@ window.portfolioDataFallback = {
           "heading": "总结",
           "content": "一条可靠的 SFT 数据管线至少需要三件事：可追溯的标注结构、可量化的质量过滤、可复现的评测方式。只有把数据生产做成工程流程，模型迭代才不会依赖个人经验。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "sft-audit-1725",
@@ -389,7 +502,11 @@ window.portfolioDataFallback = {
           "heading": "审计结果",
           "content": "最终 1725/1725 条记录无错误，1725 张图片全部唯一，0 个缺图、0 个重复图片、0 个 ID 冲突、0 个跨集泄漏。剩余 116 个 Warning 全部是模板文本完全重复，需要结合标注策略判断是否接受。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "agent-parameter-eval",
@@ -418,7 +535,11 @@ window.portfolioDataFallback = {
           "heading": "下一步",
           "content": "参数评测还应继续支持数值区间、时间范围和多层嵌套结构。对于更复杂的 Agent，还需要区分“参数完全正确”“参数部分正确”和“使用了默认值”三种情况。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "fid-not-usable",
@@ -447,7 +568,11 @@ window.portfolioDataFallback = {
           "heading": "工程结论",
           "content": "生成数据必须同时经过视觉质量与语义一致性检查。FID 可以作为模型评估指标，但不能代替数据发布门禁。最终交付物也应该包含过滤报告、拒绝原因和明确的数据边界。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "one-off-script-to-tool",
@@ -476,7 +601,11 @@ window.portfolioDataFallback = {
           "heading": "为 CI 设计退出状态",
           "content": "一个只能打印日志的脚本很难进入工程流程。增加 JSON 报告、CSV 问题清单和 --strict 退出码后，工具才能成为真正的数据发布门禁，并在 GitHub Actions 中自动阻断错误数据。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "annotation-synced-augmentation",
@@ -509,7 +638,11 @@ window.portfolioDataFallback = {
           "heading": "经验与复盘",
           "content": "两条纪律值得记住：几何增广必须同步标注，像素增广绝不能动框；增广只能加在训练集，验证集一旦出现同源增广样本，评估指标就会虚高。另外补样本要按类别缺口来补，我按中位数水平补齐后，最少类样本从 350 提到 548。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "windows-cjk-path-traps",
@@ -538,7 +671,11 @@ window.portfolioDataFallback = {
           "heading": "经验与复盘",
           "content": "还有两个同源问题：Paddle 启动时会创建 ~/.cache/paddle，目录无写权限会直接报 WinError 5，需要把 HOME 指到可写位置；验证环节忘了 paddle.no_grad() 会让计算图累积，内存涨到 5 GB、单步耗时从 6.6 秒掉到 68 秒。结论是：路径用 ASCII、验证不建图，这两条能在项目早期省下大量排查时间。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "small-object-map-ceiling",
@@ -567,7 +704,11 @@ window.portfolioDataFallback = {
           "heading": "经验与复盘",
           "content": "小目标任务里，数据集统计（框尺寸分布、面积占比、灰度分布、类别均衡度）比模型结构更值得先看。把「框占全图面积」这类指标算出来，能直接决定后面几周的优化方向，也避免把算力浪费在错误的假设上。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     },
     {
       "id": "honest-ab-experiment",
@@ -596,7 +737,11 @@ window.portfolioDataFallback = {
           "heading": "经验与复盘",
           "content": "结论应该写成「相同算力下更快收敛、泛化更好、少数类收益明显，但绝对量级仅 2~3%，需要更长训练与多随机种子重复才能下硬结论」。主动写出局限不会削弱结果，反而让结论可信；把「看起来有用」变成「在受控条件下可复现的改进」，才是这类实验真正的价值。"
         }
-      ]
+      ],
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "bookmarks": 0
     }
   ]
 };

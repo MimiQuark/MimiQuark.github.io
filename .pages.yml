@@ -6,19 +6,81 @@ media:
 
 content:
   - name: site
-    label: 页面文字
+    label: 页面与个人资料
     type: file
     path: _data/site.json
     fields:
       - name: page
-        label: 首页与栏目文案
+        label: 页面设置
         type: object
         fields:
           - { name: blogName, label: 博客名称, type: string }
           - { name: metaTitle, label: 浏览器标题, type: string }
           - { name: metaDescription, label: 搜索摘要, type: text }
+          - { name: adminUrl, label: 后台管理地址, type: string }
+          - { name: heroSummary, label: 博客说明, type: text }
+          - name: feed
+            label: 文章流文案
+            type: object
+            fields:
+              - { name: searchPlaceholder, label: 搜索框提示, type: string }
+              - { name: notesTabLabel, label: 文章标签名称, type: string }
+              - { name: projectsTabLabel, label: 项目标签名称, type: string }
+              - { name: emptyText, label: 空结果提示, type: string }
+          - name: profile
+            label: 个人主页资料
+            type: object
+            fields:
+              - { name: displayName, label: 公开昵称, type: string }
+              - { name: avatarImage, label: 头像图片, type: image }
+              - { name: avatarText, label: 无头像时文字, type: string }
+              - { name: coverImage, label: 顶部背景图, type: image }
+              - { name: headline, label: 一句话标题, type: string }
+              - { name: bio, label: 个人简介, type: text }
+              - { name: location, label: IP 属地, type: string }
+              - { name: joinedAt, label: 加入时间, type: string }
+              - { name: badges, label: 身份标签, type: string, list: true }
+              - name: stats
+                label: 顶部统计
+                type: object
+                list: true
+                fields:
+                  - { name: label, label: 指标名称, type: string }
+                  - { name: value, label: 指标数值, type: string }
+              - name: achievements
+                label: 个人成就
+                type: object
+                list: true
+                collapsible:
+                  collapsed: false
+                  summary: "{label}"
+                fields:
+                  - { name: label, label: 成就名称, type: string }
+                  - { name: value, label: 成就数值, type: string }
+                  - { name: icon, label: 图标类型, type: string }
+              - name: columns
+                label: 我的专栏
+                type: object
+                list: true
+                collapsible:
+                  collapsed: false
+                  summary: "{title}"
+                fields:
+                  - { name: title, label: 专栏名称, type: string }
+                  - { name: count, label: 文章数量, type: number }
+                  - { name: icon, label: 图标类型, type: string }
+              - name: interests
+                label: 兴趣领域
+                type: object
+                list: true
+                collapsible:
+                  collapsed: false
+                  summary: "{title}"
+                fields:
+                  - { name: title, label: 领域名称, type: string }
+                  - { name: tags, label: 方向标签, type: string, list: true }
           - name: author
-            label: 博主介绍（不是简历）
+            label: 兼容旧字段
             type: object
             fields:
               - { name: displayName, label: 公开昵称, type: string }
@@ -26,19 +88,7 @@ content:
               - { name: headline, label: 一句话标题, type: string }
               - { name: bio, label: 博客简介, type: text }
               - { name: topics, label: 关注方向, type: string, list: true }
-          - { name: heroEyebrow, label: 首页英文标签, type: string }
-          - { name: heroTitleLead, label: 首页大标题第一行, type: string }
-          - { name: heroTitleAccent, label: 首页大标题强调内容, type: string }
-          - { name: heroSummary, label: 首页说明, type: text }
-          - { name: projectsButtonLabel, label: 项目按钮文字, type: string }
-          - { name: notesButtonLabel, label: 经验按钮文字, type: string }
           - { name: heroTags, label: 首页关键词, type: string, list: true }
-          - { name: projectsEyebrow, label: 项目区英文标签, type: string }
-          - { name: projectsTitle, label: 项目区标题, type: string }
-          - { name: projectsIntro, label: 项目区说明, type: text }
-          - { name: notesEyebrow, label: 经验区英文标签, type: string }
-          - { name: notesTitle, label: 经验区标题, type: string }
-          - { name: notesIntro, label: 经验区说明, type: text }
 
   - name: projects
     label: 项目记录
@@ -68,7 +118,7 @@ content:
           - { name: detailMarkdown, label: 详细 Markdown 路径, type: string }
 
   - name: notes
-    label: 经验总结
+    label: 文章管理
     type: file
     path: _data/notes.json
     fields:
@@ -87,6 +137,10 @@ content:
           - { name: excerpt, label: 摘要, type: text }
           - { name: date, label: 日期, type: string }
           - { name: readTime, label: 阅读时间, type: string }
+          - { name: views, label: 阅读量, type: number }
+          - { name: likes, label: 点赞数, type: number }
+          - { name: comments, label: 评论数, type: number }
+          - { name: bookmarks, label: 收藏数, type: number }
           - name: coverImage
             label: 封面图片
             type: image
