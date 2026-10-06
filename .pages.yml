@@ -29,14 +29,11 @@ content:
             fields:
               - { name: githubButton, label: GitHub 按钮, type: string }
               - { name: adminButton, label: 后台按钮, type: string }
-              - { name: columnsTitle, label: 专栏标题, type: string }
               - { name: interestsTitle, label: 写作方向标题, type: string }
-              - { name: allArticles, label: 全部文章按钮, type: string }
           - name: feed
             label: 文章流文案
             type: object
             fields:
-              - { name: searchPlaceholder, label: 搜索框提示, type: string }
               - { name: notesTabLabel, label: 文章标签名称, type: string }
               - { name: projectsTabLabel, label: 项目标签名称, type: string }
               - { name: emptyText, label: 空结果提示, type: string }
@@ -45,8 +42,6 @@ content:
             type: object
             fields:
               - { name: displayName, label: 公开昵称, type: string }
-              - { name: avatarImage, label: 头像图片, type: image }
-              - { name: avatarText, label: 无头像时文字, type: string }
               - { name: coverImage, label: 顶部背景图, type: image }
               - name: visitCounter
                 label: 网站访问计数
@@ -64,17 +59,6 @@ content:
                 fields:
                   - { name: label, label: 指标名称, type: string }
                   - { name: value, label: 指标数值, type: string }
-              - name: columns
-                label: 我的专栏
-                type: object
-                list: true
-                collapsible:
-                  collapsed: false
-                  summary: "{title}"
-                fields:
-                  - { name: title, label: 专栏名称, type: string }
-                  - { name: count, label: 文章数量, type: number }
-                  - { name: icon, label: 图标类型, type: string }
               - name: interests
                 label: 写作方向
                 type: object

@@ -17,8 +17,6 @@ window.portfolioDataFallback = {
     "adminUrl": "https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main",
     "profile": {
       "displayName": "MimiQuark",
-      "avatarImage": "public/uploads/mimiquark-avatar.svg",
-      "avatarText": "MQ",
       "coverImage": "",
       "status": "持续更新",
       "stats": [
@@ -38,53 +36,6 @@ window.portfolioDataFallback = {
         {
           "label": "个分类",
           "value": "9"
-        }
-      ],
-      "columns": [
-        {
-          "title": "数据质量",
-          "count": 2,
-          "icon": "data"
-        },
-        {
-          "title": "Agent 评测",
-          "count": 2,
-          "icon": "agent"
-        },
-        {
-          "title": "SFT 数据",
-          "count": 1,
-          "icon": "article"
-        },
-        {
-          "title": "数据增强",
-          "count": 1,
-          "icon": "spark"
-        },
-        {
-          "title": "工程实践",
-          "count": 1,
-          "icon": "gear"
-        },
-        {
-          "title": "工程踩坑",
-          "count": 1,
-          "icon": "fix"
-        },
-        {
-          "title": "项目复盘",
-          "count": 1,
-          "icon": "folder"
-        },
-        {
-          "title": "指标分析",
-          "count": 1,
-          "icon": "chart"
-        },
-        {
-          "title": "实验方法",
-          "count": 1,
-          "icon": "experiment"
         }
       ],
       "interests": [
@@ -124,11 +75,9 @@ window.portfolioDataFallback = {
       }
     },
     "feed": {
-      "searchPlaceholder": "搜索文章、项目或技术关键词…",
       "notesTabLabel": "最新文章",
       "projectsTabLabel": "项目记录",
-      "emptyText": "没有找到匹配内容",
-      "subtitle": "问题怎么出现、如何定位，以及最后留下了什么方法。"
+      "emptyText": "没有找到匹配内容"
     },
     "cover": {
       "theme": "aurora"
@@ -136,9 +85,7 @@ window.portfolioDataFallback = {
     "labels": {
       "githubButton": "查看 GitHub",
       "adminButton": "维护内容",
-      "columnsTitle": "我的专栏",
-      "interestsTitle": "写作方向",
-      "allArticles": "全部文章"
+      "interestsTitle": "写作方向"
     }
   },
   "projects": [

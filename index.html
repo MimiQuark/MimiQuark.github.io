@@ -31,23 +31,12 @@
         <span class="brand-mark">MQ</span>
         <span class="brand-copy"><strong id="brandName">MimiQuark 技术博客</strong><small>ENGINEERING NOTES</small></span>
       </a>
-      <nav class="main-nav" aria-label="主导航">
-        <a class="nav-link active" href="#home">主页</a>
-        <a class="nav-link" href="#articles" data-nav-tab="notes">文章</a>
-        <a class="nav-link" href="#articles" data-nav-tab="projects">项目</a>
-        <a class="nav-link" href="#about">关于</a>
-      </nav>
       <div class="nav-actions">
-        <label class="header-search" for="siteSearch">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-          <input id="siteSearch" type="search" placeholder="搜索文章、项目或技术关键词…" autocomplete="off">
-        </label>
         <a class="admin-link" id="adminLink" href="#" target="_blank" rel="noreferrer">后台管理</a>
         <button class="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
           <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
           <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"></path></svg>
         </button>
-        <button class="menu-toggle" type="button" aria-label="打开菜单" aria-expanded="false"><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -58,7 +47,6 @@
         <div class="cover-sketch" aria-hidden="true"><span class="sketch-plane">✈</span></div>
       </div>
       <div class="profile-card reveal">
-        <div class="profile-avatar" id="profileAvatar"><img id="profileAvatarImage" alt="" hidden><span id="profileAvatarText">MQ</span></div>
         <div class="profile-main">
           <div class="profile-title-row">
             <div>
@@ -79,11 +67,6 @@
       <aside class="sidebar" id="about" aria-label="个人数据与分类">
 
         <section class="sidebar-card reveal">
-          <div class="sidebar-heading"><h2 id="columnsTitle">内容分类</h2><button class="plain-link" id="allArticlesLabel" type="button" data-feed-tab="notes">全部文章</button></div>
-          <div class="column-list" id="columnList"></div>
-        </section>
-
-        <section class="sidebar-card reveal">
           <div class="sidebar-heading"><h2 id="interestsTitle">方向标签</h2><span>Topics</span></div>
           <div class="interest-list" id="interestList"></div>
         </section>
@@ -92,14 +75,6 @@
       <section class="feed-panel reveal" id="articles">
         <div class="feed-toolbar">
           <div class="feed-tabs" id="feedTabs" role="tablist" aria-label="内容类型"></div>
-          <label class="feed-search" for="noteSearch">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-            <input id="noteSearch" type="search" placeholder="搜索文章、项目或技术关键词…" autocomplete="off">
-          </label>
-        </div>
-        <div class="feed-heading">
-          <div><h2 id="feedTitle">最新文章</h2><p id="feedSubtitle">记录项目过程、问题排查与工程复盘。</p></div>
-          <div class="feed-filters" id="feedFilters" role="group" aria-label="文章分类"></div>
         </div>
         <div class="feed-list" id="feedList" aria-live="polite"></div>
         <div class="empty-state" id="feedEmpty" hidden><strong>没有找到匹配内容</strong><span>试试其他关键词或分类。</span></div>

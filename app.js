@@ -214,7 +214,7 @@ function renderNoteItems() {
   });
   return notes.map((note, index) =>
     '<article class="feed-item note-feed-item">' +
-      '<div class="feed-tile" style="background:' + ["#315d9d", "#2f7b68", "#6d5db4", "#b45d33"][index % 4] + '"><strong>' + escapeHtml("#" + (note.category || "文章")) + '</strong><span>' + escapeHtml(note.number || "") + '</span></div>' +
+      '' +
       '<div class="feed-copy">' +
         '<button class="feed-title" type="button" data-note="' + escapeHtml(note.id) + '">' + escapeHtml(note.title || "") + '</button>' +
         '<p class="feed-excerpt">' + escapeHtml(note.excerpt || note.lead || "") + '</p>' +
@@ -232,11 +232,11 @@ function renderProjectItems() {
   );
   return projects.map((project, index) =>
     '<article class="feed-item project-feed-item">' +
-      '<div class="feed-tile" style="background:' + ["#2f7b68", "#315d9d", "#b45d33", "#6d5db4"][index % 4] + '"><strong>#' + escapeHtml(project.type || "项目") + '</strong><span>' + escapeHtml(project.number || "") + '</span></div>' +
+      '' +
       '<div class="feed-copy">' +
         '<button class="feed-title" type="button" data-project="' + escapeHtml(project.id) + '">' + escapeHtml(project.title || "") + '</button>' +
         '<p class="feed-excerpt">' + escapeHtml(project.summary || "") + '</p>' +
-        '<div class="feed-meta"><strong>项目归档</strong><span>' + escapeHtml(project.period || "") + '</span><span>' + escapeHtml((project.stack || []).slice(0, 4).join(" · ")) + '</span></div>' +
+        '<div class="feed-meta"><strong>项目归档</strong><span>#' + escapeHtml(project.type || '项目') + '</span><span>' + escapeHtml(project.period || "") + '</span><span>' + escapeHtml((project.stack || []).slice(0, 4).join(" · ")) + '</span></div>' +
         '<div class="feed-actions"><button class="feed-action" type="button" data-project="' + escapeHtml(project.id) + '">查看项目拆解</button><span class="feed-action">' + escapeHtml(project.highlight || "项目复盘") + '</span></div>' +
       '</div>' +
     '</article>'
@@ -406,16 +406,9 @@ document.addEventListener("click", event => {
 });
 
 $(".theme-toggle").addEventListener("click", () => setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"));
-const menuToggle = $(".menu-toggle");
-const mainNav = $(".main-nav");
-menuToggle.addEventListener("click", () => { const open = mainNav.classList.toggle("open"); menuToggle.setAttribute("aria-expanded", String(open)); });
-$$(".main-nav a").forEach(link => link.addEventListener("click", () => { mainNav.classList.remove("open"); menuToggle.setAttribute("aria-expanded", "false"); }));
-
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
     if ($("#detailModal").classList.contains("open")) closeModal();
-    mainNav.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
   }
 });
 
