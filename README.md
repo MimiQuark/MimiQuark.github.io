@@ -20,7 +20,7 @@
 
 打开 `https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main` 可以编辑：
 
-- 顶部背景文字、博客名称、搜索提示和内容流文案
+- 顶部背景文字、背景主题（aurora / ink / sunrise）、博客名称、搜索提示和内容流文案
 - 公开昵称、头像、顶部背景图、写作标签和简介
 - 总访问量使用的计数空间、计数键和接口失败时的显示值
 - 文章分类和写作方向

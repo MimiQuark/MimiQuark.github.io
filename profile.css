@@ -195,3 +195,25 @@ body {
 .profile-avatar { background:#eef7ff !important; }
 @media (max-width: 860px) { .profile-cover{height:190px !important}.cover-copy{left:26px;right:26px;max-width:none}.cover-copy strong{font-size:28px} }
 @media (max-width: 640px) { .profile-cover{height:178px !important}.cover-copy{left:18px;right:18px;top:52%}.cover-copy span{font-size:9px;letter-spacing:1.5px}.cover-copy strong{font-size:23px}.cover-copy small{font-size:10px}.sketch-plane{display:none}.profile-card{margin-top:-8px !important} }
+
+/* Selectable cover backgrounds */
+body {
+  background: linear-gradient(180deg, #f8fbff 0, #eef4f9 34%, #f4f6f8 100%) !important;
+}
+.profile-cover.has-image { background-image: var(--cover-image) !important; }
+.profile-cover[data-cover-theme="aurora"] { background: radial-gradient(circle at 78% 18%, rgba(65,205,220,.32), transparent 18rem), radial-gradient(circle at 18% 75%, rgba(109,159,255,.26), transparent 20rem), linear-gradient(120deg,#e7f2ff 0,#dff8fb 48%,#eef7ff 100%) !important; }
+.profile-cover[data-cover-theme="aurora"]::before { background: linear-gradient(rgba(29,91,150,.08) 1px,transparent 1px), linear-gradient(90deg,rgba(29,91,150,.08) 1px,transparent 1px) !important; }
+.profile-cover[data-cover-theme="aurora"] .cover-copy span { color:#176f8f !important; }
+.profile-cover[data-cover-theme="aurora"] .cover-copy strong { color:#102f4e !important; }
+.profile-cover[data-cover-theme="aurora"] .cover-copy small { color:#4d718b !important; }
+.profile-cover[data-cover-theme="aurora"] .sketch-plane { color:#2586b3 !important; }
+.profile-cover[data-cover-theme="aurora"] .cover-sketch::before,.profile-cover[data-cover-theme="aurora"] .cover-sketch::after { color:rgba(58,126,174,.5) !important; }
+.profile-cover[data-cover-theme="ink"] { background: radial-gradient(circle at 78% 18%, rgba(79,216,224,.42), transparent 18rem), radial-gradient(circle at 18% 75%, rgba(97,150,255,.34), transparent 20rem), linear-gradient(120deg,#0d2138 0,#103d67 42%,#0f6d88 100%) !important; }
+.profile-cover[data-cover-theme="ink"] .cover-copy span { color:#9fe7f4 !important; }
+.profile-cover[data-cover-theme="ink"] .cover-copy strong { color:#fff !important; }
+.profile-cover[data-cover-theme="ink"] .cover-copy small { color:rgba(225,248,255,.72) !important; }
+.profile-cover[data-cover-theme="sunrise"] { background: radial-gradient(circle at 82% 16%, rgba(255,154,92,.32), transparent 17rem), radial-gradient(circle at 12% 80%, rgba(67,154,255,.24), transparent 19rem), linear-gradient(120deg,#fff7ed 0,#eef7ff 48%,#dff7f5 100%) !important; }
+.profile-cover[data-cover-theme="sunrise"]::before { background: linear-gradient(rgba(119,79,42,.07) 1px,transparent 1px), linear-gradient(90deg,rgba(119,79,42,.07) 1px,transparent 1px) !important; }
+.profile-cover[data-cover-theme="sunrise"] .cover-copy span { color:#ad5f28 !important; }
+.profile-cover[data-cover-theme="sunrise"] .cover-copy strong { color:#233b50 !important; }
+.profile-cover[data-cover-theme="sunrise"] .cover-copy small { color:#6a6f75 !important; }

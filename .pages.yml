@@ -26,6 +26,7 @@ content:
               - { name: eyebrow, label: 英文标签, type: string }
               - { name: title, label: 背景主标题, type: string }
               - { name: subtitle, label: 背景副标题, type: string }
+              - { name: theme, label: "背景主题：aurora / ink / sunrise", type: string }
           - name: labels
             label: 页面按钮文字
             type: object

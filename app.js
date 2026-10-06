@@ -91,8 +91,9 @@ function renderPage() {
   }
 
   const cover = $("#profileCover");
+  if (cover) cover.dataset.coverTheme = coverContent.theme || "aurora";
   if (cover && profile.coverImage) {
-    cover.style.backgroundImage = 'url("' + String(profile.coverImage).replaceAll('"', '%22') + '")';
+    cover.style.setProperty('--cover-image', 'url("' + String(profile.coverImage).replaceAll('"', '%22') + '")');
     cover.classList.add("has-image");
   }
 

@@ -163,7 +163,8 @@ window.portfolioDataFallback = {
     "cover": {
       "eyebrow": "ENGINEERING NOTES",
       "title": "记录问题 / 拆解方案 / 留下复盘",
-      "subtitle": "工业 AI · 数据工程 · LLM 应用"
+      "subtitle": "工业 AI · 数据工程 · LLM 应用",
+      "theme": "aurora"
     },
     "labels": {
       "githubButton": "查看 GitHub",
