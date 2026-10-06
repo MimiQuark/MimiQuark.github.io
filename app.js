@@ -438,13 +438,16 @@ async function loadManagedContent() {
 }
 
 async function boot() {
+  setTheme(localStorage.getItem("project-notes-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+  $("#currentYear").textContent = new Date().getFullYear();
+  renderPage();
+  renderFeed();
+  observeReveals();
   await loadManagedContent();
   renderPage();
   renderFeed();
-  updateVisitCount();
   observeReveals();
-  setTheme(localStorage.getItem("project-notes-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
-  $("#currentYear").textContent = new Date().getFullYear();
+  updateVisitCount();
 }
 
 boot();
