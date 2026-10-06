@@ -19,6 +19,22 @@ content:
           - { name: metaDescription, label: 搜索摘要, type: text }
           - { name: adminUrl, label: 后台管理地址, type: string }
           - { name: heroSummary, label: 博客说明, type: text }
+          - name: cover
+            label: 顶部背景文字
+            type: object
+            fields:
+              - { name: eyebrow, label: 英文标签, type: string }
+              - { name: title, label: 背景主标题, type: string }
+              - { name: subtitle, label: 背景副标题, type: string }
+          - name: labels
+            label: 页面按钮文字
+            type: object
+            fields:
+              - { name: githubButton, label: GitHub 按钮, type: string }
+              - { name: adminButton, label: 后台按钮, type: string }
+              - { name: columnsTitle, label: 专栏标题, type: string }
+              - { name: interestsTitle, label: 写作方向标题, type: string }
+              - { name: allArticles, label: 全部文章按钮, type: string }
           - name: feed
             label: 文章流文案
             type: object
@@ -28,17 +44,24 @@ content:
               - { name: projectsTabLabel, label: 项目标签名称, type: string }
               - { name: emptyText, label: 空结果提示, type: string }
           - name: profile
-            label: 个人主页资料
+            label: 博客资料
             type: object
             fields:
               - { name: displayName, label: 公开昵称, type: string }
               - { name: avatarImage, label: 头像图片, type: image }
               - { name: avatarText, label: 无头像时文字, type: string }
               - { name: coverImage, label: 顶部背景图, type: image }
+              - name: visitCounter
+                label: 网站访问计数
+                type: object
+                fields:
+                  - { name: namespace, label: 服务命名空间, type: string }
+                  - { name: key, label: 计数键, type: string }
+                  - { name: endpoint, label: 计数接口模板, type: string }
+                  - { name: fallback, label: 接口失败时显示值, type: number }
               - { name: headline, label: 一句话标题, type: string }
               - { name: bio, label: 个人简介, type: text }
-              - { name: location, label: IP 属地, type: string }
-              - { name: joinedAt, label: 加入时间, type: string }
+              - { name: status, label: 博客状态, type: string }
               - { name: badges, label: 身份标签, type: string, list: true }
               - name: stats
                 label: 顶部统计
@@ -47,17 +70,6 @@ content:
                 fields:
                   - { name: label, label: 指标名称, type: string }
                   - { name: value, label: 指标数值, type: string }
-              - name: achievements
-                label: 个人成就
-                type: object
-                list: true
-                collapsible:
-                  collapsed: false
-                  summary: "{label}"
-                fields:
-                  - { name: label, label: 成就名称, type: string }
-                  - { name: value, label: 成就数值, type: string }
-                  - { name: icon, label: 图标类型, type: string }
               - name: columns
                 label: 我的专栏
                 type: object
@@ -70,7 +82,7 @@ content:
                   - { name: count, label: 文章数量, type: number }
                   - { name: icon, label: 图标类型, type: string }
               - name: interests
-                label: 兴趣领域
+                label: 写作方向
                 type: object
                 list: true
                 collapsible:

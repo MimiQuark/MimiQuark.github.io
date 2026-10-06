@@ -28,7 +28,7 @@ function setHref(id, value) {
 }
 
 function iconSymbol(name) {
-  return ({ heart: "♥", comment: "●", bookmark: "◆", rank: "↗", article: "▤", brain: "✦", gear: "⚙" })[name] || "•";
+  return ({ calendar: "▦", article: "▤", folder: "▣", clock: "◷", chart: "▥", experiment: "✦", spark: "◇", data: "▤", agent: "◎", fix: "✓", gear: "⚙", heart: "♥", comment: "●", bookmark: "◆", rank: "↗", brain: "✦" })[name] || "•";
 }
 
 function metricNumber(value, fallback = 0) {
@@ -52,7 +52,6 @@ function renderPage() {
     { label: "项目", value: projects.length },
     { label: "分类", value: new Set(notes.map(item => item.category).filter(Boolean)).size }
   ];
-  const achievements = Array.isArray(profile.achievements) ? profile.achievements : [];
   const columns = Array.isArray(profile.columns) && profile.columns.length ? profile.columns : Array.from(
     notes.reduce((map, note) => {
       if (note.category) map.set(note.category, (map.get(note.category) || 0) + 1);
@@ -70,7 +69,17 @@ function renderPage() {
   setText("profileHeadline", profile.headline || author.headline || "");
   setText("profileBio", profile.bio || author.bio || "");
   setText("profileAvatarText", avatarText);
-  setText("feedSubtitle", page.feed && page.feed.subtitle ? page.feed.subtitle : "记录项目过程、问题排查与工程复盘。");
+  const coverContent = page.cover || {};
+  setText("coverEyebrow", coverContent.eyebrow || "ENGINEERING NOTES");
+  setText("coverTitle", coverContent.title || "记录问题 / 拆解方案 / 留下复盘");
+  setText("coverSubtitle", coverContent.subtitle || "工业 AI · 数据工程 · LLM 应用");
+  const labels = page.labels || {};
+  setText("githubButton", labels.githubButton || "查看 GitHub");
+  setText("profileAdminButton", labels.adminButton || "维护内容");
+  setText("columnsTitle", labels.columnsTitle || "我的专栏");
+  setText("interestsTitle", labels.interestsTitle || "写作方向");
+  setText("allArticlesLabel", labels.allArticles || "全部文章");
+  setText("feedSubtitle", page.feed && page.feed.subtitle ? page.feed.subtitle : "问题怎么出现、如何定位，以及最后留下了什么方法。");
 
   const avatar = $("#profileAvatarImage");
   if (avatar && avatarImage) {
@@ -95,22 +104,17 @@ function renderPage() {
 
   const statTarget = $("#profileStats");
   if (statTarget) statTarget.innerHTML = stats.map(item =>
-    '<div class="profile-stat"><strong>' + escapeHtml(metricNumber(item.value)) + '</strong><span>' + escapeHtml(item.label) + '</span></div>'
+    '<div class="profile-stat"><strong' + (item.source === "visits" ? ' data-visit-count' : '') + '>' + escapeHtml(metricNumber(item.value)) + '</strong><span>' + escapeHtml(item.label) + '</span></div>'
   ).join("");
 
   const meta = $("#profileMeta");
   if (meta) {
     const parts = [];
-    if (profile.location) parts.push("<span>⌖ IP 属地：" + escapeHtml(profile.location) + "</span>");
-    if (profile.joinedAt) parts.push("<span>◷ 加入时间：" + escapeHtml(profile.joinedAt) + "</span>");
-    parts.push("<span>⌘ 内容由 Pages CMS 管理</span>");
+    parts.push("<span>◉ " + escapeHtml(profile.status || "持续更新") + "</span>");
+    parts.push("<span>⌘ GitHub Pages</span>");
+    parts.push("<span>▤ 内容由 Pages CMS 管理</span>");
     meta.innerHTML = parts.join("");
   }
-
-  const achievementsTarget = $("#achievementList");
-  if (achievementsTarget) achievementsTarget.innerHTML = achievements.map((item, index) =>
-    '<div class="achievement-item"><i class="achievement-icon ' + ["blue", "green", "purple", ""][index % 4] + '">' + escapeHtml(iconSymbol(item.icon)) + '</i><span>' + escapeHtml(item.label) + '</span><strong>' + escapeHtml(item.value) + '</strong></div>'
-  ).join("");
 
   const columnsTarget = $("#columnList");
   if (columnsTarget) columnsTarget.innerHTML = columns.map(item =>
@@ -128,6 +132,25 @@ function renderPage() {
   ["siteSearch", "noteSearch"].forEach(id => { const input = document.getElementById(id); if (input) input.placeholder = searchPlaceholder; });
   renderFeedTabs();
   renderFeedFilters();
+}
+
+async function updateVisitCount() {
+  const profile = (portfolioData.page || {}).profile || {};
+  const config = profile.visitCounter || {};
+  const fallback = Number(config.fallback || 0);
+  let value = fallback;
+  try {
+    if (["localhost", "127.0.0.1", ""].includes(window.location.hostname)) throw new Error("Local preview does not increment visits");
+    const endpoint = String(config.endpoint || "https://counterapi.com/api/{namespace}/{key}").replace("{namespace}", encodeURIComponent(config.namespace || "mimiquark")).replace("{key}", encodeURIComponent(config.key || "tech-blog-visits"));
+    const response = await fetch(endpoint, { cache: "no-store" });
+    if (!response.ok) throw new Error("Visit counter unavailable");
+    const result = await response.json();
+    value = Number(result.value != null ? result.value : result.count);
+    if (!Number.isFinite(value)) value = fallback;
+  } catch (error) {
+    console.info("Using fallback visit count.", error);
+  }
+  $$("[data-visit-count]").forEach(element => { element.textContent = metricNumber(value); });
 }
 
 function renderFeedTabs() {
@@ -186,6 +209,13 @@ function renderFeed() {
   }
 }
 
+function noteMeta(note) {
+  const items = ["<strong>原创</strong>", "<span>更新于 " + escapeHtml(note.date || "未设置") + "</span>", "<span>" + escapeHtml(note.readTime || "阅读") + "</span>"];
+  const optional = [["views", "阅读"], ["likes", "点赞"], ["comments", "评论"], ["bookmarks", "收藏"]];
+  optional.forEach(([key, label]) => { if (Number(note[key]) > 0) items.push("<span>" + escapeHtml(metricNumber(note[key])) + " " + label + "</span>"); });
+  return items.join("");
+}
+
 function renderNoteItems() {
   const query = state.noteQuery.trim().toLowerCase();
   const notes = (Array.isArray(portfolioData.notes) ? portfolioData.notes : []).filter(note => {
@@ -198,7 +228,7 @@ function renderNoteItems() {
       '<div class="feed-copy">' +
         '<button class="feed-title" type="button" data-note="' + escapeHtml(note.id) + '">' + escapeHtml(note.title || "") + '</button>' +
         '<p class="feed-excerpt">' + escapeHtml(note.excerpt || note.lead || "") + '</p>' +
-        '<div class="feed-meta"><strong>原创</strong><span>更新于 ' + escapeHtml(note.date || "未设置") + '</span><span>' + escapeHtml(metricNumber(note.views || 0)) + ' 阅读</span><span>' + escapeHtml(metricNumber(note.likes || 0)) + ' 点赞</span><span>' + escapeHtml(metricNumber(note.comments || 0)) + ' 评论</span><span>' + escapeHtml(metricNumber(note.bookmarks || 0)) + ' 收藏</span></div>' +
+        '<div class="feed-meta">' + noteMeta(note) + '</div>' +
         '<div class="feed-actions"><button class="feed-action" type="button" data-note="' + escapeHtml(note.id) + '">阅读全文</button><span class="feed-action">' + escapeHtml(note.readTime || "阅读") + '</span></div>' +
       '</div>' +
     '</article>'
@@ -216,7 +246,7 @@ function renderProjectItems() {
       '<div class="feed-copy">' +
         '<button class="feed-title" type="button" data-project="' + escapeHtml(project.id) + '">' + escapeHtml(project.title || "") + '</button>' +
         '<p class="feed-excerpt">' + escapeHtml(project.summary || "") + '</p>' +
-        '<div class="feed-meta"><strong>' + escapeHtml(project.role || "项目记录") + '</strong><span>' + escapeHtml(project.period || "") + '</span><span>' + escapeHtml((project.stack || []).slice(0, 4).join(" · ")) + '</span></div>' +
+        '<div class="feed-meta"><strong>项目归档</strong><span>' + escapeHtml(project.period || "") + '</span><span>' + escapeHtml((project.stack || []).slice(0, 4).join(" · ")) + '</span></div>' +
         '<div class="feed-actions"><button class="feed-action" type="button" data-project="' + escapeHtml(project.id) + '">查看项目拆解</button><span class="feed-action">' + escapeHtml(project.highlight || "项目复盘") + '</span></div>' +
       '</div>' +
     '</article>'
@@ -292,14 +322,14 @@ async function openProject(id) {
       const response = await fetch(project.detailMarkdown, { cache: "no-store" });
       if (!response.ok) throw new Error("Project detail unavailable");
       const markdown = await response.text();
-      openModal({ eyebrow: project.type || "项目", number: project.number || "", meta: [project.role, project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "), title: project.title || "项目详情", markdown });
+      openModal({ eyebrow: project.type || "项目", number: project.number || "", meta: [project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "), title: project.title || "项目详情", markdown });
       return;
     } catch (error) { console.info("Using project summary.", error); }
   }
   openModal({
     eyebrow: project.type || "项目",
     number: project.number || "",
-    meta: [project.role, project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "),
+    meta: [project.period, (project.stack || []).join(" / ")].filter(Boolean).join(" · "),
     title: project.title || "项目详情",
     lead: project.summary || "",
     sections: [
@@ -428,6 +458,7 @@ async function boot() {
   await loadManagedContent();
   renderPage();
   renderFeed();
+  updateVisitCount();
   observeReveals();
   setTheme(localStorage.getItem("project-notes-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
   $("#currentYear").textContent = new Date().getFullYear();

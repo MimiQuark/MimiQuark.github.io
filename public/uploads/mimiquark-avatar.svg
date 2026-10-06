@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MimiQuark">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#102a43"/>
+      <stop offset="0.55" stop-color="#1769aa"/>
+      <stop offset="1" stop-color="#32b6c9"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#bff3ff" stop-opacity=".38"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="132" fill="#edf6fb"/>
+  <circle cx="256" cy="256" r="196" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#ring)" stroke-width="5" opacity=".8"/>
+  <g fill="none" stroke="#9ee8f3" stroke-width="7" stroke-linecap="round" opacity=".85">
+    <path d="M105 177h58l30 42"/>
+    <path d="M407 166h-54l-27 40"/>
+    <path d="M112 349h53l27-38"/>
+    <path d="M400 360h-50l-31-43"/>
+  </g>
+  <g fill="#9ee8f3">
+    <circle cx="102" cy="177" r="10"/><circle cx="413" cy="166" r="10"/>
+    <circle cx="109" cy="349" r="10"/><circle cx="406" cy="360" r="10"/>
+  </g>
+  <text x="256" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="138" font-weight="800" fill="#ffffff" letter-spacing="-8">MQ</text>
+  <path d="M168 334c48 38 126 39 176 0" fill="none" stroke="#9ee8f3" stroke-width="8" stroke-linecap="round" opacity=".72"/>
+</svg>

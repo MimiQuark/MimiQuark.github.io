@@ -1,11 +1,11 @@
 window.portfolioDataFallback = {
   "page": {
-    "metaTitle": "MimiQuark 技术博客 | 工程笔记与项目复盘",
-    "metaDescription": "记录多模态 SFT 数据、LLM 应用、RAG、Agent 与数据工程实践。",
+    "metaTitle": "MimiQuark 工程笔记 | 问题排查与项目复盘",
+    "metaDescription": "记录工业 AI、数据工程与 LLM 应用中的问题排查、方案取舍和工程复盘。",
     "heroEyebrow": "DATA × LLM ENGINEERING",
     "heroTitleLead": "把数据和模型，",
     "heroTitleAccent": "做成可复现、可评测的工程。",
-    "heroSummary": "记录项目过程、问题排查与工程复盘。所有展示内容均可在 Pages CMS 后台编辑。",
+    "heroSummary": "把问题拆开，把方案写透，把实验和踩坑留下可复用的记录。",
     "projectsButtonLabel": "浏览项目",
     "notesButtonLabel": "阅读经验总结",
     "heroTags": [
@@ -21,7 +21,7 @@ window.portfolioDataFallback = {
     "notesEyebrow": "02 / NOTES",
     "notesTitle": "经验总结",
     "notesIntro": "不只写结论，也记录数据为什么失真、评测如何设计，以及问题最终怎样复现和修复。",
-    "blogName": "MimiQuark 技术博客",
+    "blogName": "MimiQuark 工程笔记",
     "author": {
       "displayName": "MimiJimmy",
       "avatarText": "Z",
@@ -39,107 +39,138 @@ window.portfolioDataFallback = {
     "adminUrl": "https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main",
     "profile": {
       "displayName": "MimiQuark",
-      "avatarImage": "",
+      "avatarImage": "public/uploads/mimiquark-avatar.svg",
       "avatarText": "MQ",
       "coverImage": "",
-      "headline": "多模态数据、SFT 与 LLM 应用工程",
-      "bio": "人工智能本科，关注多模态数据处理、SFT 数据质量、RAG、工具调用 Agent 与数据工程实践。",
-      "location": "广东",
-      "joinedAt": "2026-10",
+      "headline": "把问题拆开，把方案写透。",
+      "bio": "记录工业 AI、数据工程与 LLM 应用中的问题排查、方案取舍和复盘。",
+      "status": "持续更新",
       "badges": [
-        "Python",
-        "LLM",
-        "Data Engineering"
+        "工程复盘",
+        "数据质量",
+        "LLM 应用",
+        "工业 AI"
       ],
       "stats": [
         {
           "label": "总访问量",
-          "value": "7,681"
+          "value": "0",
+          "source": "visits"
         },
         {
-          "label": "原创",
-          "value": "17"
+          "label": "篇复盘",
+          "value": "11"
         },
         {
-          "label": "粉丝",
-          "value": "36"
+          "label": "个项目归档",
+          "value": "6"
         },
         {
-          "label": "关注",
-          "value": "37"
-        }
-      ],
-      "achievements": [
-        {
-          "label": "获得点赞",
-          "value": "164",
-          "icon": "heart"
-        },
-        {
-          "label": "获得评论",
-          "value": "1",
-          "icon": "comment"
-        },
-        {
-          "label": "获得收藏",
-          "value": "112",
-          "icon": "bookmark"
-        },
-        {
-          "label": "博客总排名",
-          "value": "45,497",
-          "icon": "rank"
+          "label": "个分类",
+          "value": "9"
         }
       ],
       "columns": [
         {
-          "title": "调研报告",
+          "title": "数据质量",
           "count": 2,
+          "icon": "data"
+        },
+        {
+          "title": "Agent 评测",
+          "count": 2,
+          "icon": "agent"
+        },
+        {
+          "title": "SFT 数据",
+          "count": 1,
           "icon": "article"
         },
         {
-          "title": "机器学习",
-          "count": 4,
-          "icon": "brain"
+          "title": "数据增强",
+          "count": 1,
+          "icon": "spark"
         },
         {
-          "title": "环境配置",
-          "count": 2,
+          "title": "工程实践",
+          "count": 1,
           "icon": "gear"
+        },
+        {
+          "title": "工程踩坑",
+          "count": 1,
+          "icon": "fix"
+        },
+        {
+          "title": "项目复盘",
+          "count": 1,
+          "icon": "folder"
+        },
+        {
+          "title": "指标分析",
+          "count": 1,
+          "icon": "chart"
+        },
+        {
+          "title": "实验方法",
+          "count": 1,
+          "icon": "experiment"
         }
       ],
       "interests": [
         {
-          "title": "Python",
+          "title": "大模型应用",
           "tags": [
-            "python",
-            "scikit-learn",
-            "matplotlib"
+            "LLM",
+            "RAG",
+            "LangGraph",
+            "Agent 评测"
           ]
         },
         {
-          "title": "大数据",
+          "title": "数据工程",
           "tags": [
-            "sql",
-            "spark",
-            "data engineering"
+            "SFT",
+            "数据质量",
+            "多模态清洗",
+            "自动审计"
           ]
         },
         {
-          "title": "人工智能",
+          "title": "工业 AI",
           "tags": [
-            "computer vision",
-            "machine learning",
-            "LLM"
+            "缺陷检测",
+            "图像增广",
+            "计算机视觉",
+            "小目标"
           ]
         }
-      ]
+      ],
+      "visitCounter": {
+        "namespace": "mimiquark",
+        "key": "tech-blog-visits",
+        "endpoint": "https://counterapi.com/api/{namespace}/{key}",
+        "fallback": 0
+      }
     },
     "feed": {
       "searchPlaceholder": "搜索文章、项目或技术关键词…",
       "notesTabLabel": "最新文章",
       "projectsTabLabel": "项目记录",
-      "emptyText": "没有找到匹配内容"
+      "emptyText": "没有找到匹配内容",
+      "subtitle": "问题怎么出现、如何定位，以及最后留下了什么方法。"
+    },
+    "cover": {
+      "eyebrow": "ENGINEERING NOTES",
+      "title": "记录问题 / 拆解方案 / 留下复盘",
+      "subtitle": "工业 AI · 数据工程 · LLM 应用"
+    },
+    "labels": {
+      "githubButton": "查看 GitHub",
+      "adminButton": "维护内容",
+      "columnsTitle": "我的专栏",
+      "interestsTitle": "写作方向",
+      "allArticles": "全部文章"
     }
   },
   "projects": [

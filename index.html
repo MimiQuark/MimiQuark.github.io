@@ -55,7 +55,7 @@
   <main id="main" class="profile-page">
     <section class="profile-shell section-shell" id="home">
       <div class="profile-cover" id="profileCover">
-        <div class="cover-sketch" aria-hidden="true"><span class="sketch-plane">✈</span><strong>Hello world / no bug!</strong></div>
+        <div class="cover-sketch" aria-hidden="true"><span class="sketch-plane">✈</span></div><div class="cover-copy"><span id="coverEyebrow">INDUSTRIAL AI · DATA · LLM</span><strong id="coverTitle">让数据与模型变成可复现的工程</strong><small id="coverSubtitle">工业 AI / SFT 数据 / Agent 工程 / Python 后端</small></div>
       </div>
       <div class="profile-card reveal">
         <div class="profile-avatar" id="profileAvatar"><img id="profileAvatarImage" alt="" hidden><span id="profileAvatarText">MQ</span></div>
@@ -66,7 +66,7 @@
               <div class="profile-badges" id="profileBadges"></div>
             </div>
             <div class="profile-actions">
-              <a class="pill-button" href="https://github.com/MimiQuark" target="_blank" rel="noreferrer">访问 GitHub</a>
+              <a class="pill-button" id="githubButton" href="https://github.com/MimiQuark" target="_blank" rel="noreferrer">查看 GitHub</a>
               <a class="pill-button primary" id="profileAdminButton" href="#" target="_blank" rel="noreferrer">维护内容</a>
             </div>
           </div>
@@ -80,18 +80,14 @@
 
     <div class="content-layout section-shell">
       <aside class="sidebar" id="about" aria-label="个人数据与分类">
-        <section class="sidebar-card reveal">
-          <div class="sidebar-heading"><h2>个人成就</h2></div>
-          <div class="achievement-list" id="achievementList"></div>
-        </section>
 
         <section class="sidebar-card reveal">
-          <div class="sidebar-heading"><h2>我的专栏</h2><button class="plain-link" type="button" data-feed-tab="notes">全部文章</button></div>
+          <div class="sidebar-heading"><h2 id="columnsTitle">内容分类</h2><button class="plain-link" id="allArticlesLabel" type="button" data-feed-tab="notes">全部文章</button></div>
           <div class="column-list" id="columnList"></div>
         </section>
 
         <section class="sidebar-card reveal">
-          <div class="sidebar-heading"><h2>兴趣领域</h2><span>设置</span></div>
+          <div class="sidebar-heading"><h2 id="interestsTitle">方向标签</h2><span>Topics</span></div>
           <div class="interest-list" id="interestList"></div>
         </section>
       </aside>
