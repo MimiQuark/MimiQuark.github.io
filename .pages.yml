@@ -18,14 +18,10 @@ content:
           - { name: metaTitle, label: 浏览器标题, type: string }
           - { name: metaDescription, label: 搜索摘要, type: text }
           - { name: adminUrl, label: 后台管理地址, type: string }
-          - { name: heroSummary, label: 博客说明, type: text }
           - name: cover
-            label: 顶部背景文字
+            label: 顶部背景
             type: object
             fields:
-              - { name: eyebrow, label: 英文标签, type: string }
-              - { name: title, label: 背景主标题, type: string }
-              - { name: subtitle, label: 背景副标题, type: string }
               - { name: theme, label: "背景主题：aurora / ink / sunrise", type: string }
           - name: labels
             label: 页面按钮文字
@@ -60,10 +56,7 @@ content:
                   - { name: key, label: 计数键, type: string }
                   - { name: endpoint, label: 计数接口模板, type: string }
                   - { name: fallback, label: 接口失败时显示值, type: number }
-              - { name: headline, label: 一句话标题, type: string }
-              - { name: bio, label: 个人简介, type: text }
               - { name: status, label: 博客状态, type: string }
-              - { name: badges, label: 身份标签, type: string, list: true }
               - name: stats
                 label: 顶部统计
                 type: object
@@ -92,17 +85,6 @@ content:
                 fields:
                   - { name: title, label: 领域名称, type: string }
                   - { name: tags, label: 方向标签, type: string, list: true }
-          - name: author
-            label: 兼容旧字段
-            type: object
-            fields:
-              - { name: displayName, label: 公开昵称, type: string }
-              - { name: avatarText, label: 头像文字, type: string }
-              - { name: headline, label: 一句话标题, type: string }
-              - { name: bio, label: 博客简介, type: text }
-              - { name: topics, label: 关注方向, type: string, list: true }
-          - { name: heroTags, label: 首页关键词, type: string, list: true }
-
   - name: projects
     label: 项目记录
     type: file

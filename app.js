@@ -66,13 +66,8 @@ function renderPage() {
   setText("brandName", blogName);
   setText("footerName", blogName);
   setText("profileName", displayName);
-  setText("profileHeadline", profile.headline || author.headline || "");
-  setText("profileBio", profile.bio || author.bio || "");
   setText("profileAvatarText", avatarText);
   const coverContent = page.cover || {};
-  setText("coverEyebrow", coverContent.eyebrow || "ENGINEERING NOTES");
-  setText("coverTitle", coverContent.title || "记录问题 / 拆解方案 / 留下复盘");
-  setText("coverSubtitle", coverContent.subtitle || "工业 AI · 数据工程 · LLM 应用");
   const labels = page.labels || {};
   setText("githubButton", labels.githubButton || "查看 GitHub");
   setText("profileAdminButton", labels.adminButton || "维护内容");
@@ -95,12 +90,6 @@ function renderPage() {
   if (cover && profile.coverImage) {
     cover.style.setProperty('--cover-image', 'url("' + String(profile.coverImage).replaceAll('"', '%22') + '")');
     cover.classList.add("has-image");
-  }
-
-  const badges = $("#profileBadges");
-  if (badges) {
-    const items = Array.isArray(profile.badges) ? profile.badges : (author.topics || []);
-    badges.innerHTML = items.map(item => "<span>" + escapeHtml(item) + "</span>").join("");
   }
 
   const statTarget = $("#profileStats");

@@ -5,16 +5,8 @@ window.portfolioDataFallback = {
     "heroEyebrow": "DATA × LLM ENGINEERING",
     "heroTitleLead": "把数据和模型，",
     "heroTitleAccent": "做成可复现、可评测的工程。",
-    "heroSummary": "把问题拆开，把方案写透，把实验和踩坑留下可复用的记录。",
     "projectsButtonLabel": "浏览项目",
     "notesButtonLabel": "阅读经验总结",
-    "heroTags": [
-      "SFT 数据",
-      "VLM",
-      "RAG",
-      "Agent",
-      "Data Engineering"
-    ],
     "projectsEyebrow": "01 / PROJECTS",
     "projectsTitle": "项目记录",
     "projectsIntro": "围绕多模态数据、模型评测和工程落地，记录每个项目的真实问题、方案与结果。",
@@ -22,35 +14,13 @@ window.portfolioDataFallback = {
     "notesTitle": "经验总结",
     "notesIntro": "不只写结论，也记录数据为什么失真、评测如何设计，以及问题最终怎样复现和修复。",
     "blogName": "MimiQuark 工程笔记",
-    "author": {
-      "displayName": "MimiJimmy",
-      "avatarText": "Z",
-      "headline": "多模态数据、SFT 与 LLM 应用工程",
-      "bio": "人工智能本科，关注多模态数据处理、SFT 数据质量、RAG 与工具调用 Agent 的工程化落地。",
-      "topics": [
-        "Python",
-        "SQL",
-        "VLM",
-        "RAG",
-        "Agent",
-        "Docker"
-      ]
-    },
     "adminUrl": "https://app.pagescms.org/MimiQuark/MimiQuark.github.io/main",
     "profile": {
       "displayName": "MimiQuark",
       "avatarImage": "public/uploads/mimiquark-avatar.svg",
       "avatarText": "MQ",
       "coverImage": "",
-      "headline": "把问题拆开，把方案写透。",
-      "bio": "记录工业 AI、数据工程与 LLM 应用中的问题排查、方案取舍和复盘。",
       "status": "持续更新",
-      "badges": [
-        "工程复盘",
-        "数据质量",
-        "LLM 应用",
-        "工业 AI"
-      ],
       "stats": [
         {
           "label": "总访问量",
@@ -161,9 +131,6 @@ window.portfolioDataFallback = {
       "subtitle": "问题怎么出现、如何定位，以及最后留下了什么方法。"
     },
     "cover": {
-      "eyebrow": "ENGINEERING NOTES",
-      "title": "记录问题 / 拆解方案 / 留下复盘",
-      "subtitle": "工业 AI · 数据工程 · LLM 应用",
       "theme": "aurora"
     },
     "labels": {
