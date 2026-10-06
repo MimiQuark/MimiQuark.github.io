@@ -249,10 +249,23 @@ function safeUrl(value) {
   return "#";
 }
 
+function normalizeMarkdownUrl(value) {
+  const url = String(value || "").trim().replace(/^<|>$/g, "");
+  if (/^(https?:\/\/|\/|\.\/|\.\.\/)/.test(url)) return url;
+  if (/^[\w./-]+\.(png|jpe?g|webp|gif|svg)(\?.*)?$/i.test(url)) return url;
+  return "";
+}
+
 function renderInlineMarkdown(value) {
   let output = escapeHtml(value);
-  output = output.replace(/!\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g, '<img src="$2" alt="$1">');
-  output = output.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
+  output = output.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, url) => {
+    const safe = normalizeMarkdownUrl(url);
+    return safe ? '<img src="' + safe + '" alt="' + alt + '">' : alt;
+  });
+  output = output.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+    const safe = normalizeMarkdownUrl(url);
+    return safe ? '<a href="' + safe + '" target="_blank" rel="noreferrer">' + label + '</a>' : label;
+  });
   output = output.replace(/`([^`]+)`/g, "<code>$1</code>");
   output = output.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   return output;
