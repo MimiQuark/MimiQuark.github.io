@@ -150,35 +150,35 @@
       "detailMarkdown": "/public/projects/air-quality-agent/README.md"
     },
     {
-      "id": "pcba-defect-detection-repro",
+      "id": "pcba-defect-detection-yolov8",
       "number": "06",
-      "title": "PCBA 缺陷检测：全流程复现与标注同步增广",
-      "type": "课程项目复现 / 工业缺陷检测",
-      "role": "复现与改进（数据管线、模型训练、A/B 实验）",
-      "period": "2026.09",
-      "stack": ["Python", "PaddlePaddle", "YOLOv3", "Darknet53", "OpenCV", "VOC 数据集", "mAP", "A/B 实验"],
-      "summary": "手写 Darknet53 + YOLOv3 跑通 PCBA 表面缺陷检测全流程，并补上原实验最致命的缺陷——几何增广不同步改写 XML 标注框；用控制变量的 A/B 实验量化标注同步增广的价值，同时记录下中文路径静默失败等一批工程坑。",
+      "title": "PCBA 五类缺陷检测：YOLOv8 全流程落地",
+      "type": "工业视觉项目 / 模型训练与部署",
+      "role": "独立完成（数据处理、训练评估、Web 演示、报告）",
+      "period": "2026.10",
+      "stack": ["Python", "YOLOv8", "Ultralytics", "PyTorch", "OpenCV", "Gradio", "ONNX Runtime", "Pytest", "GitHub Actions"],
+      "summary": "在 600 张 PCBA 图像上完成 XML 转 YOLO、数据质量审计、960 输入训练、早停、独立测试集评估、ONNX 导出与 Gradio 部署。测试集 mAP50 87.94%、mAP50-95 53.13%，并把模型、指标、报告和可运行代码完整归档。",
       "challenge": [
-        "原实验数据增广只产出图片、从不更新 bndbox，增广图等于废数据，无法参与训练。",
-        "瑕疵框中位仅 73x73 像素、占整图 0.11%，属于典型小目标，缩放到 320 输入后只剩几个像素。",
-        "本机没有 GPU，只能用 8 核 CPU 复现原本 100 epoch / 640 输入的训练，必须缩小规模并证明结论仍然成立。",
-        "数据集 600 张全部欠曝（灰度均值 97.9~123，均低于标准 128），采集端问题会直接压低模型上限。"
+        "原数据固定划分为 350/100/150，验证集与测试集来自不同编号区间，指标差异明显，说明划分可能混入批次或采集条件差异。",
+        "缺陷目标普遍很小，框宽高约 24~139 像素；本机没有 NVIDIA GPU，只能用 4 核 8 线程 CPU 训练 960 输入。",
+        "Gradio 的 numpy 输入是 RGB，而 Ultralytics ndarray 推理路径按 BGR 解释，通道不一致会静默降低置信度并造成漏检。",
+        "open_solder 类别的 mAP50 为 82.07%，但 Recall 只有 54.59%，漏检是模型的主要短板。"
       ],
       "solution": [
-        "手写 Darknet53 + YOLOv3（61.6M 参数、三尺度检测、paddle.vision.ops.yolo_loss），完整复现训练/评估/预测/导出。",
-        "实现标注同步增广：按变换类型逐框换算坐标，翻转交换 xmin/xmax，裁剪后 clip、丢弃残框、贴边框标 truncated，并且只增广训练集。",
-        "写两层自动校验代替肉眼看图：逐框边界检查 + 框内像素与「原图对应区域按同样变换后的结果」比对（误差 3~5/255）。",
-        "按类别缺口贪心补样本，把训练集从 350 张扩到 548 张，最少类样本从 350 提到 548，类别不再失衡。",
-        "设计控制变量 A/B 实验：相同随机种子初始化、相同 528 步、相同超参与验证集，唯一变量是训练集。"
+        "逐图校验 XML 与图片对应关系、尺寸、类别和边界框，再转换为归一化 YOLO xywh，保留原始划分，避免重划分引入泄漏。",
+        "采用 yolov8n.pt 预训练权重，以 960 输入、batch 2、40 轮、patience 10 训练；第 36 轮早停，最佳权重来自第 26 轮。",
+        "训练阶段使用 HSV、水平翻转、旋转、平移、缩放和 Mosaic 在线增广，验证集与测试集不增广。",
+        "封装统一 CLI 与 Gradio 入口，支持图片、视频和摄像头推理，输出类别统计、合格判定和 CSV 明细，并导出已验证的 FP32 ONNX。",
+        "补充 pytest 和 GitHub Actions，对坐标转换、状态判定、CLI 命令和数据完整性做自动检查。"
       ],
       "impact": [
-        "复现结果与原版口径一致：验证 loss 90~121，与原版 epoch 99 的 104.47 同量级；算力受限下最优 mAP 1.89%。",
-        "A/B 实验：增广组 mAP 2.56% vs 原图组 2.07%，验证 loss 90.58 vs 98.61。",
-        "增益集中在被定向增广的少数类：skewing 的 AP 从 0.63% 提升到 5.05%；样本最多的 short 类反而原图组更高，符合「增广补短板」的预期。",
-        "定位并修复 5 类工程问题：OpenCV 中文路径静默失败、Paddle 静态图导出中文路径 mkdir failed、Paddle 缓存目录权限、验证环节漏 no_grad 导致内存暴涨、原脚本空结果 json 序列化崩溃。"
+        "测试集 Precision 94.18%、Recall 77.42%、mAP50 87.94%、mAP50-95 53.13%。",
+        "逐类别 mAP50：open_solder 82.07%、short 99.50%、skewing 80.54%、solder_bridge 99.03%、tombstoning 78.57%。",
+        "修复 Web 端 RGB/BGR 不一致后，同一测试图从 4 个目标恢复为 7 个，与命令行结果一致。",
+        "发布 best.pt、ONNX、逐类指标、混淆矩阵、训练曲线、Word/PDF 报告与可运行源码。"
       ],
-      "highlight": "标注同步增广 + 控制变量 A/B + 诚实的局限说明",
-      "detailMarkdown": "/public/projects/pcba-defect-detection-repro/README.md"
+      "highlight": "预训练强基线 + 独立测试评估 + 真实部署问题闭环",
+      "detailMarkdown": "/public/projects/pcba-defect-detection-yolov8/README.md"
     }
   ]
 }

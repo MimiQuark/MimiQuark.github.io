@@ -27,7 +27,7 @@ window.portfolioDataFallback = {
         },
         {
           "label": "篇复盘",
-          "value": "11"
+          "value": "9"
         },
         {
           "label": "个项目归档",
@@ -35,7 +35,7 @@ window.portfolioDataFallback = {
         },
         {
           "label": "个分类",
-          "value": "9"
+          "value": "7"
         }
       ],
       "interests": [
@@ -96,16 +96,7 @@ window.portfolioDataFallback = {
       "type": "本科毕业设计 / 生成式视觉",
       "role": "独立完成",
       "period": "本科毕业设计",
-      "stack": [
-        "PyTorch",
-        "Focus-StyleGAN",
-        "WGAN-GP",
-        "AdaIN",
-        "CBAM",
-        "Optuna",
-        "Flask",
-        "MVTec AD"
-      ],
+      "stack": ["PyTorch", "Focus-StyleGAN", "WGAN-GP", "AdaIN", "CBAM", "Optuna", "Flask", "MVTec AD"],
       "summary": "面向工业异常检测中的缺陷样本稀缺问题，设计双分支解耦生成器，将缺陷生成与背景保持分开建模，并通过注意力融合和多尺度判别器生成可控伪异常图像。",
       "challenge": [
         "工业缺陷样本稀少，传统几何变换无法生成新的缺陷形态。",
@@ -134,14 +125,7 @@ window.portfolioDataFallback = {
       "type": "扩展项目 / 多模态数据工程",
       "role": "扩展项目负责人 / 数据管线",
       "period": "2025.09 - 2026.09",
-      "stack": [
-        "Python",
-        "MVTec AD",
-        "Qwen-VL",
-        "StyleGAN",
-        "LLaMA-Factory",
-        "MD5"
-      ],
+      "stack": ["Python", "MVTec AD", "Qwen-VL", "StyleGAN", "LLaMA-Factory", "MD5"],
       "summary": "在 Focus-StyleGAN 基础项目上扩展，从缺陷 mask 标注、VLM 自然语言改写，到合成数据生成、去重和质量评分，搭建可对接 LLaMA-Factory 的多模态 SFT 数据生产管线。",
       "challenge": [
         "基础项目能够生成伪异常图像，但生成图与结构化训练指令之间缺少稳定映射。",
@@ -170,15 +154,7 @@ window.portfolioDataFallback = {
       "type": "数据工程工具 / 质量门禁",
       "role": "独立开发",
       "period": "持续开发",
-      "stack": [
-        "Python",
-        "Pillow",
-        "JSONL",
-        "MD5",
-        "unittest",
-        "HTML Report",
-        "CI"
-      ],
+      "stack": ["Python", "Pillow", "JSONL", "MD5", "unittest", "HTML Report", "CI"],
       "summary": "把 SFT 数据管线中的质量检查抽象成通用工具，对数据格式、图片完整性、重复样本、ID 冲突、训练集泄漏和模板文本进行审计，并输出可追溯报告。",
       "challenge": [
         "多模态数据缺少统一结构，不同版本可能没有顶层 ID、类别或 split 字段。",
@@ -208,15 +184,7 @@ window.portfolioDataFallback = {
       "type": "Agent 工程工具 / 可观测性",
       "role": "独立开发",
       "period": "持续开发",
-      "stack": [
-        "Python",
-        "JSONL",
-        "Tool Calling",
-        "RAG Eval",
-        "Parameter Eval",
-        "HTML Report",
-        "CI"
-      ],
+      "stack": ["Python", "JSONL", "Tool Calling", "RAG Eval", "Parameter Eval", "HTML Report", "CI"],
       "summary": "把 Agent 评测从单一工具准确率扩展为工具、参数、RAG 引用、拒答、JSON、延迟和 token 七维评测，并支持多模型或 Prompt 横向对比。",
       "challenge": [
         "只比较工具名称，无法发现城市、污染物等参数传错。",
@@ -247,17 +215,7 @@ window.portfolioDataFallback = {
       "type": "省级大创 / LLM Agent",
       "role": "核心成员 / Agent 与 RAG",
       "period": "2024.09 - 2025.06",
-      "stack": [
-        "LangGraph",
-        "Pandas",
-        "scikit-learn",
-        "RAG",
-        "Chroma",
-        "MCP",
-        "FastAPI",
-        "SQLite",
-        "Docker"
-      ],
+      "stack": ["LangGraph", "Pandas", "scikit-learn", "RAG", "Chroma", "MCP", "FastAPI", "SQLite", "Docker"],
       "summary": "基于 6 个城市 52,704 条小时级空气质量数据，构建覆盖实时查询、24h 预测、综合预警、相关性分析与政策检索的工具调用 Agent。",
       "challenge": [
         "空气质量数据存在缺失值、时间粒度和城市指标口径不一致的问题。",
@@ -281,44 +239,35 @@ window.portfolioDataFallback = {
       "detailMarkdown": "/public/projects/air-quality-agent/README.md"
     },
     {
-      "id": "pcba-defect-detection-repro",
+      "id": "pcba-defect-detection-yolov8",
       "number": "06",
-      "title": "PCBA 缺陷检测：全流程复现与标注同步增广",
-      "type": "课程项目复现 / 工业缺陷检测",
-      "role": "复现与改进（数据管线、模型训练、A/B 实验）",
-      "period": "2026.09",
-      "stack": [
-        "Python",
-        "PaddlePaddle",
-        "YOLOv3",
-        "Darknet53",
-        "OpenCV",
-        "VOC 数据集",
-        "mAP",
-        "A/B 实验"
-      ],
-      "summary": "手写 Darknet53 + YOLOv3 跑通 PCBA 表面缺陷检测全流程，并补上原实验最致命的缺陷——几何增广不同步改写 XML 标注框；用控制变量的 A/B 实验量化标注同步增广的价值，同时记录下中文路径静默失败等一批工程坑。",
+      "title": "PCBA 五类缺陷检测：YOLOv8 全流程落地",
+      "type": "工业视觉项目 / 模型训练与部署",
+      "role": "独立完成（数据处理、训练评估、Web 演示、报告）",
+      "period": "2026.10",
+      "stack": ["Python", "YOLOv8", "Ultralytics", "PyTorch", "OpenCV", "Gradio", "ONNX Runtime", "Pytest", "GitHub Actions"],
+      "summary": "在 600 张 PCBA 图像上完成 XML 转 YOLO、数据质量审计、960 输入训练、早停、独立测试集评估、ONNX 导出与 Gradio 部署。测试集 mAP50 87.94%、mAP50-95 53.13%，并把模型、指标、报告和可运行代码完整归档。",
       "challenge": [
-        "原实验数据增广只产出图片、从不更新 bndbox，增广图等于废数据，无法参与训练。",
-        "瑕疵框中位仅 73x73 像素、占整图 0.11%，属于典型小目标，缩放到 320 输入后只剩几个像素。",
-        "本机没有 GPU，只能用 8 核 CPU 复现原本 100 epoch / 640 输入的训练，必须缩小规模并证明结论仍然成立。",
-        "数据集 600 张全部欠曝（灰度均值 97.9~123，均低于标准 128），采集端问题会直接压低模型上限。"
+        "原数据固定划分为 350/100/150，验证集与测试集来自不同编号区间，指标差异明显，说明划分可能混入批次或采集条件差异。",
+        "缺陷目标普遍很小，框宽高约 24~139 像素；本机没有 NVIDIA GPU，只能用 4 核 8 线程 CPU 训练 960 输入。",
+        "Gradio 的 numpy 输入是 RGB，而 Ultralytics ndarray 推理路径按 BGR 解释，通道不一致会静默降低置信度并造成漏检。",
+        "open_solder 类别的 mAP50 为 82.07%，但 Recall 只有 54.59%，漏检是模型的主要短板。"
       ],
       "solution": [
-        "手写 Darknet53 + YOLOv3（61.6M 参数、三尺度检测、paddle.vision.ops.yolo_loss），完整复现训练/评估/预测/导出。",
-        "实现标注同步增广：按变换类型逐框换算坐标，翻转交换 xmin/xmax，裁剪后 clip、丢弃残框、贴边框标 truncated，并且只增广训练集。",
-        "写两层自动校验代替肉眼看图：逐框边界检查 + 框内像素与「原图对应区域按同样变换后的结果」比对（误差 3~5/255）。",
-        "按类别缺口贪心补样本，把训练集从 350 张扩到 548 张，最少类样本从 350 提到 548，类别不再失衡。",
-        "设计控制变量 A/B 实验：相同随机种子初始化、相同 528 步、相同超参与验证集，唯一变量是训练集。"
+        "逐图校验 XML 与图片对应关系、尺寸、类别和边界框，再转换为归一化 YOLO xywh，保留原始划分，避免重划分引入泄漏。",
+        "采用 yolov8n.pt 预训练权重，以 960 输入、batch 2、40 轮、patience 10 训练；第 36 轮早停，最佳权重来自第 26 轮。",
+        "训练阶段使用 HSV、水平翻转、旋转、平移、缩放和 Mosaic 在线增广，验证集与测试集不增广。",
+        "封装统一 CLI 与 Gradio 入口，支持图片、视频和摄像头推理，输出类别统计、合格判定和 CSV 明细，并导出已验证的 FP32 ONNX。",
+        "补充 pytest 和 GitHub Actions，对坐标转换、状态判定、CLI 命令和数据完整性做自动检查。"
       ],
       "impact": [
-        "复现结果与原版口径一致：验证 loss 90~121，与原版 epoch 99 的 104.47 同量级；算力受限下最优 mAP 1.89%。",
-        "A/B 实验：增广组 mAP 2.56% vs 原图组 2.07%，验证 loss 90.58 vs 98.61。",
-        "增益集中在被定向增广的少数类：skewing 的 AP 从 0.63% 提升到 5.05%；样本最多的 short 类反而原图组更高，符合「增广补短板」的预期。",
-        "定位并修复 5 类工程问题：OpenCV 中文路径静默失败、Paddle 静态图导出中文路径 mkdir failed、Paddle 缓存目录权限、验证环节漏 no_grad 导致内存暴涨、原脚本空结果 json 序列化崩溃。"
+        "测试集 Precision 94.18%、Recall 77.42%、mAP50 87.94%、mAP50-95 53.13%。",
+        "逐类别 mAP50：open_solder 82.07%、short 99.50%、skewing 80.54%、solder_bridge 99.03%、tombstoning 78.57%。",
+        "修复 Web 端 RGB/BGR 不一致后，同一测试图从 4 个目标恢复为 7 个，与命令行结果一致。",
+        "发布 best.pt、ONNX、逐类指标、混淆矩阵、训练曲线、Word/PDF 报告与可运行源码。"
       ],
-      "highlight": "标注同步增广 + 控制变量 A/B + 诚实的局限说明",
-      "detailMarkdown": "/public/projects/pcba-defect-detection-repro/README.md"
+      "highlight": "预训练强基线 + 独立测试评估 + 真实部署问题闭环",
+      "detailMarkdown": "/public/projects/pcba-defect-detection-yolov8/README.md"
     }
   ],
   "notes": [
@@ -591,97 +540,35 @@ window.portfolioDataFallback = {
       "bookmarks": 0
     },
     {
-      "id": "windows-cjk-path-traps",
+      "id": "yolov8-pcba-engineering",
       "number": "09",
-      "category": "工程踩坑",
-      "title": "中文路径把 OpenCV 和 Paddle 都坑了：两个静默失败的排查",
-      "excerpt": "cv2.imread 遇到中文绝对路径静默返回 None，paddle.jit.save 直接 mkdir failed——一个不报错，一个报错但看不出原因，排查思路值得记下来。",
-      "date": "2026.09.21",
-      "readTime": "7 分钟",
-      "coverImage": "",
-      "lead": "Windows 上的中文路径问题，往往在 C++ 底层的文件接口上爆雷。",
-      "sections": [
-        {
-          "heading": "现象",
-          "content": "训练脚本用相对路径读图一切正常，但我新写的分析脚本用绝对路径读同一批图时，cv2.imread 返回 None，随后 cv2.resize 抛 !ssize.empty() 断言失败。另一边，paddle.jit.save 导出静态图模型时报了一个信息量极低的 “mkdir failed!”，路径正好也是含中文的那一层。"
-        },
-        {
-          "heading": "定位过程",
-          "content": "关键线索是「同一份代码换个路径写法就成功或失败」。OpenCV 和 Paddle 的部分实现走的是本地 ANSI 编码的 C 接口，而 Python 传过去的是 Unicode 字符串，中文路径在转换时就丢了信息——所以一个静默返回 None，一个报出截断后的乱码路径。"
-        },
-        {
-          "heading": "修复方案",
-          "content": "OpenCV 侧改用「二进制读 + 解码」：np.fromfile 读成字节，再 cv2.imdecode 解码成图像，写图用 cv2.imencode 配合 tofile。Paddle 侧改流程：先导出到纯 ASCII 的临时目录（tempfile.mkdtemp），再用 Python 的 shutil 拷回目标目录。两处都封装成小工具函数复用。"
-        },
-        {
-          "heading": "经验与复盘",
-          "content": "还有两个同源问题：Paddle 启动时会创建 ~/.cache/paddle，目录无写权限会直接报 WinError 5，需要把 HOME 指到可写位置；验证环节忘了 paddle.no_grad() 会让计算图累积，内存涨到 5 GB、单步耗时从 6.6 秒掉到 68 秒。结论是：路径用 ASCII、验证不建图，这两条能在项目早期省下大量排查时间。"
-        }
-      ],
-      "views": 0,
-      "likes": 0,
-      "comments": 0,
-      "bookmarks": 0
-    },
-    {
-      "id": "small-object-map-ceiling",
-      "number": "10",
-      "category": "指标分析",
-      "title": "瑕疵只占 0.11% 面积：mAP 上不去的真正原因",
-      "excerpt": "同样是从零训练 YOLOv3，为什么课程实验也只有 23.38% 的 mAP？量化完数据集才发现，问题在数据本身。",
-      "date": "2026.09.21",
-      "readTime": "6 分钟",
-      "coverImage": "",
-      "lead": "先量数据，再调模型。",
-      "sections": [
-        {
-          "heading": "问题背景",
-          "content": "复现时原版实验在 GPU 上跑满 100 个 epoch、640 输入，mAP 只有 23.38%。第一反应是模型或训练策略有问题，但把数据集量化之后，答案很不一样。"
-        },
-        {
-          "heading": "量化结果",
-          "content": "600 张图都是 2448x2048，共 4552 个标注框，瑕疵框中位尺寸只有 73x73 像素，占整图面积约 0.11%。也就是说，输入缩到 320 之后，一个典型瑕疵只剩约 9 个像素——检测头要在这样的尺度上区分五类缺陷，本身就很吃力。另外全量图片灰度均值落在 97.9~123，全部低于标准灰度 128，属于系统性欠曝。"
-        },
-        {
-          "heading": "结论与调优方向",
-          "content": "这解释了三件事：为什么提高输入分辨率是最直接的杠杆；为什么 350 张训练图从零训练会在第 8 轮附近就过拟合（train loss 继续降、val loss 反升）；以及为什么先做光照校正比换网络结构更划算。按性价比排序：提分辨率 → 迁移学习 → 标注同步增广与类别补齐 → 锚框重聚类。"
-        },
-        {
-          "heading": "经验与复盘",
-          "content": "小目标任务里，数据集统计（框尺寸分布、面积占比、灰度分布、类别均衡度）比模型结构更值得先看。把「框占全图面积」这类指标算出来，能直接决定后面几周的优化方向，也避免把算力浪费在错误的假设上。"
-        }
-      ],
-      "views": 0,
-      "likes": 0,
-      "comments": 0,
-      "bookmarks": 0
-    },
-    {
-      "id": "honest-ab-experiment",
-      "number": "11",
-      "category": "实验方法",
-      "title": "我差点把 A/B 结论夸大成「精度提升 24%」",
-      "excerpt": "做数据增广的 A/B 对比，如果变量没控制、只报一个变好的数字，结论就站不住；2~3% 的 mAP 量级下噪声尤其大。",
-      "date": "2026.09.21",
+      "category": "工业 AI",
+      "title": "从 2% 到 87.94%：PCBA 缺陷检测真正该优先解决什么",
+      "excerpt": "同样是 PCBA 缺陷检测，换用 YOLOv8n、960 输入和预训练权重后，测试集 mAP50 达到 87.94%。真正起作用的不是“模型更新”，而是数据验证、分辨率、训练策略和部署链路一起闭环。",
+      "date": "2026.10.08",
       "readTime": "8 分钟",
-      "coverImage": "",
-      "lead": "让人信服的不是提升幅度，而是变量控制与局限说明。",
+      "coverImage": "/public/projects/pcba-defect-detection-yolov8/web-demo.png",
+      "lead": "先建立可靠基线，再讨论复杂改进。",
       "sections": [
         {
           "heading": "问题背景",
-          "content": "我实现了标注同步增广，很想知道它值不值得。最容易的做法是「加了增广之前 2.07%，加了之后 2.56%，提升 24%」——听起来很漂亮，但这种写法有两个硬伤：变量不唯一，以及忽略绝对量级。"
+          "content": "旧版本选择手写 Darknet53 + YOLOv3，在 320 输入和受限 CPU 算力下，最终 mAP 只有 2% 左右。继续在手写网络里调参，投入会越来越大，但很难验证工程链路是否真的可用。"
         },
         {
-          "heading": "实验设计",
-          "content": "改成控制变量：两组用相同随机种子初始化（首步 loss 4423.84 vs 4424.16，确认起点一致）、相同 528 步迭代、相同超参数（lr、优化器、batch、输入尺寸），验证集完全相同且绝不增广，唯一变量就是训练集是 350 张原图还是 548 张含增广数据。"
+          "heading": "这次换了什么",
+          "content": "新版本使用 yolov8n.pt 预训练权重，输入提高到 960，保留原始 350/100/150 划分，并且只在训练集执行 HSV、几何变换和 Mosaic。训练配置为 batch 2、40 轮、patience 10，验证集用于选择最佳权重，测试集仅在训练结束后评估一次。"
         },
         {
           "heading": "结果怎么读",
-          "content": "最终 mAP 2.56% vs 2.07%，验证 loss 90.58 vs 98.61；增益集中在被定向增广的少数类（skewing 的 AP 从 0.63% 到 5.05%），而样本最多的类别反而原图组更好。更重要的是，264 步时原图组其实领先（2.67% vs 0.80%），增广组是后程反超——这说明单点结果并不可靠。"
+          "content": "最终测试集 Precision 94.18%、Recall 77.42%、mAP50 87.94%、mAP50-95 53.13%。短路的 mAP50 达到 99.50%，开焊为 82.07%。但开焊 Recall 只有 54.59%，说明它仍是最容易漏检的类别，后续优化必须按类别看指标，不能只报一个总体 mAP。"
         },
         {
-          "heading": "经验与复盘",
-          "content": "结论应该写成「相同算力下更快收敛、泛化更好、少数类收益明显，但绝对量级仅 2~3%，需要更长训练与多随机种子重复才能下硬结论」。主动写出局限不会削弱结果，反而让结论可信；把「看起来有用」变成「在受控条件下可复现的改进」，才是这类实验真正的价值。"
+          "heading": "两个真实工程问题",
+          "content": "一是验证集与测试集来自不同编号区间，最佳验证 mAP50-95 为 36.98%，测试集为 53.13%，提示划分可能混入批次差异。二是 Gradio 的 numpy 输入为 RGB，而 Ultralytics 默认按 BGR 处理，修正通道后同一张图从 4 个检出恢复到 7 个。部署链路中的静默错误，比训练本身更容易被忽略。"
+        },
+        {
+          "heading": "复盘",
+          "content": "预训练强基线不是“偷懒”，而是把有限算力留给数据和工程问题。数据格式、划分是否可靠，输入分辨率是否匹配目标尺度，测试是否真正独立，部署输入是否与训练一致，这些优先级都高于从零手写一套低精度网络。"
         }
       ],
       "views": 0,
